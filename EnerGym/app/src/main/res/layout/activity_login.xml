@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".login.LoginActivity"
     android:orientation="vertical"
-    android:background="@color/gray">
+    android:background="@color/gray"
+    android:id="@+id/loginActivity">
 
     <TextView
         android:layout_width="match_parent"
@@ -25,7 +26,7 @@
         android:layout_height="wrap_content"
         android:src="@drawable/logo_app1"
         android:layout_gravity="center"
-        android:marginTop="30dp" />
+        android:paddingTop="20dp" />
 
     <EditText
         android:id="@+id/etUsername"
