@@ -18,7 +18,7 @@
         android:textSize="36sp"
         android:textStyle="bold"
         android:gravity="center"
-        android:paddingTop="32dp"
+        android:paddingTop="20dp"
         />
 
     <ImageView
@@ -29,11 +29,11 @@
         android:paddingTop="20dp" />
 
     <EditText
-        android:id="@+id/etUsername"
+        android:id="@+id/etEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/beige"
-        android:hint="Nombre de usuario"
+        android:hint="Correo electrónico"
         android:textColorHint="@color/black"
         android:fontFamily="@font/mina_regular"
         android:paddingStart="15dp"

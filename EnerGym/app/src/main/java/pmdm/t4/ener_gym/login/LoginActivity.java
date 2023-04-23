@@ -21,6 +21,9 @@ public class LoginActivity extends AppCompatActivity {
     private ActivityLoginBinding binding;
     private FirebaseAuth mAuth;
 
+    private String email;
+    private String password;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,37 +34,37 @@ public class LoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         iniciarSesion();
-        registro();
+        goToRegistro();
     }
 
     private void iniciarSesion() {
 
-        String username = binding.etUsername.getText().toString().trim();
-        String password = binding.etPassword.getText().toString().trim();
+        email = binding.etEmail.getText().toString();
+        password = binding.etPassword.getText().toString();
 
         binding.btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if (username.isEmpty() || password.isEmpty()) {
+                if (email.isEmpty() || password.isEmpty()) {
                     Snackbar.make(binding.loginActivity, "Hay campos vacíos", Snackbar.LENGTH_LONG).show();
                 } else {
-                    login(username, password);
-
+                    login(email, password);
                 }
             }
         });
     }
 
-    private void login(String username, String password) {
-        mAuth.signInWithEmailAndPassword(username, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+    private void login(String email, String password) {
+        mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
 
                 if (task.isSuccessful()) {
-                    Snackbar.make(binding.loginActivity, "BIENVENIDO " + username, Snackbar.LENGTH_LONG).show();
+                    Snackbar.make(binding.loginActivity, "BIENVENIDO", Snackbar.LENGTH_LONG).show();
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(intent);
+
                 } else {
                     Snackbar.make(binding.loginActivity, "El usuario no existe\n¡REGISTRESE!", Snackbar.LENGTH_LONG).show();
                 }
@@ -69,7 +72,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void registro(){
+    private void goToRegistro(){
         binding.btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -4,9 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".login.LoginActivity"
+    tools:context=".login.RegisterActivity"
     android:orientation="vertical"
-    android:background="@color/gray">
+    android:background="@color/gray"
+    android:id="@+id/registerActivity">
 
     <TextView
         android:layout_width="match_parent"
@@ -17,7 +18,7 @@
         android:textSize="36sp"
         android:textStyle="bold"
         android:gravity="center"
-        android:paddingTop="32dp"
+        android:paddingTop="20dp"
         />
 
     <EditText
@@ -80,21 +81,6 @@
         android:layout_marginEnd="40dp"
         android:layout_marginStart="40dp"/>
 
-    <EditText
-        android:id="@+id/etPasswordConfirm"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/beige"
-        android:hint="Confirmar contraseña"
-        android:textColorHint="@color/black"
-        android:fontFamily="@font/mina_regular"
-        android:paddingStart="15dp"
-        android:paddingTop="12dp"
-        android:paddingBottom="12dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="40dp"
-        android:layout_marginStart="40dp"/>
-
     <Button
         android:id="@+id/btnRegister"
         android:layout_width="match_parent"
@@ -105,7 +91,7 @@
         android:fontFamily="@font/mina_regular"
         android:layout_marginEnd="80dp"
         android:layout_marginStart="80dp"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="120dp"
         android:background="@drawable/custom_button_login" />
 
 </LinearLayout>
