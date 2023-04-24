@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "225227631814",
+    "project_id": "energymapp-9c5de",
+    "storage_bucket": "energymapp-9c5de.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:225227631814:android:4242387c41250a254d7bc7",
+        "android_client_info": {
+          "package_name": "com.example.energymapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "225227631814-v91d8jcd73rtegae83lq46pnhmkonm5c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsIcs6fBkOIQ6Nmqtt_cRJqQ1z4-ZdSXw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "225227631814-v91d8jcd73rtegae83lq46pnhmkonm5c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
