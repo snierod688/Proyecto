@@ -1,8 +1,10 @@
-package com.example.energymapp;
+package com.example.energymapp.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.example.energymapp.R;
 
 public class MainActivity extends AppCompatActivity {
 

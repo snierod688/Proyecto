@@ -24,7 +24,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     private ActivityRegisterBinding binding;
     private FirebaseAuth mAuth;
-    DatabaseReference databaseReference;
+    private DatabaseReference databaseReference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +66,7 @@ public class RegisterActivity extends AppCompatActivity {
                 if (task.isSuccessful()){
 
                     String id = UUID.randomUUID().toString();
-                    Usuario usuario = new Usuario(username, nombre, correo, password);
+                    Usuario usuario = new Usuario(id, username, nombre, correo, password);
                     databaseReference.child("Usuario").child(id).setValue(usuario);
 
                     startActivity(new Intent(getApplicationContext(), LoginActivity.class));

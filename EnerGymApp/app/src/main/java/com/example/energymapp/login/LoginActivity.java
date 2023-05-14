@@ -1,25 +1,32 @@
 package com.example.energymapp.login;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.energymapp.MainActivity;
-import com.example.energymapp.R;
+import com.example.energymapp.view.MainActivity;
 import com.example.energymapp.databinding.ActivityLoginBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class LoginActivity extends AppCompatActivity {
 
     private ActivityLoginBinding binding;
     private FirebaseAuth mAuth;
+    private DatabaseReference databaseReference;
 
     private String email;
     private String password;
@@ -30,11 +37,24 @@ public class LoginActivity extends AppCompatActivity {
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
-        // Se inicializa la instancia de Firebase
+        // Se inicializan las instancias de Firebase
         mAuth = FirebaseAuth.getInstance();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
 
         iniciarSesion();
         goToRegistro();
+        
+        /*if (binding.cbRemember.isChecked()){
+            guardarIdUsuario();
+        }*/
+    }
+
+    private void guardarIdUsuario() {
+        SharedPreferences sharedPreferences = getSharedPreferences("usuario", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        String idUsuario = obtenerIdUsuario();
+        editor.commit();
+
     }
 
     private void iniciarSesion() {
@@ -80,6 +100,33 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    private String obtenerIdUsuario(){
+
+        final String[] id = new String[1];
+        databaseReference.child("Usuario").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                if (snapshot.exists()){
+                    String emailGuardado = snapshot.child("email").getValue().toString();
+
+                    if (binding.etEmail.getText().toString().equals(emailGuardado)){
+                         id[0] = snapshot.child("id").getValue().toString();
+                    }
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        return id[0];
     }
 
 }

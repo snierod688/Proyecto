@@ -6,14 +6,14 @@
     android:layout_height="match_parent"
     tools:context=".login.LoginActivity"
     android:orientation="vertical"
-    android:background="@color/gray"
+    android:background="@color/dark_blue"
     android:id="@+id/loginActivity">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="INICIAR SESIÓN"
-        android:textColor="@color/green"
+        android:textColor="@color/gray1"
         android:fontFamily="@font/mina_regular"
         android:textSize="36sp"
         android:textStyle="bold"
@@ -22,24 +22,25 @@
         />
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/logo_app1"
+        android:layout_width="316dp"
+        android:layout_height="264dp"
         android:layout_gravity="center"
-        android:paddingTop="20dp" />
+        android:paddingTop="20dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/logo" />
 
     <EditText
         android:id="@+id/etEmail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/beige"
+        android:background="@drawable/custom_login_edittext"
         android:hint="Correo electrónico"
-        android:textColorHint="@color/black"
+        android:textColorHint="@color/white"
         android:fontFamily="@font/mina_regular"
         android:paddingStart="15dp"
-        android:paddingTop="12dp"
-        android:paddingBottom="12dp"
-        android:layout_marginTop="40dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:layout_marginTop="30dp"
         android:layout_marginEnd="40dp"
         android:layout_marginStart="40dp"/>
 
@@ -47,17 +48,29 @@
         android:id="@+id/etPassword"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/beige"
+        android:background="@drawable/custom_login_edittext"
         android:hint="Contraseña"
         android:inputType="textPassword"
-        android:textColorHint="@color/black"
+        android:textColorHint="@color/white"
         android:fontFamily="@font/mina_regular"
         android:paddingStart="15dp"
-        android:paddingTop="12dp"
-        android:paddingBottom="12dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="40dp"
         android:layout_marginStart="40dp"/>
+
+    <CheckBox
+        android:id="@+id/cbRemember"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginStart="40dp"
+        android:text="Recordar usuario"
+        android:textColor="@color/white"
+        android:fontFamily="@font/mina_regular"
+        android:button="@drawable/custom_checkbox"/>
 
     <Button
         android:id="@+id/btnLogin"
