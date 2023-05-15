@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item android:id="@+id/routine"
+        android:title="Rutina"
+        android:icon="@drawable/rutina"/>
+    <item android:id="@+id/train"
+        android:title="Entrenamiento"
+        android:icon="@drawable/pesa"/>
+    <item android:id="@+id/stats"
+        android:title="Estadísticas"
+        android:icon="@drawable/estadistica"/>
+    <item android:id="@+id/chronometer"
+        android:title="Cronómetro"
+        android:icon="@drawable/reloj"/>
+
+</menu>
