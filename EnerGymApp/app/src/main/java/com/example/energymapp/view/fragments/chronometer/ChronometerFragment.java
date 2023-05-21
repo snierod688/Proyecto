@@ -1,4 +1,4 @@
-package com.example.energymapp.view.fragments;
+package com.example.energymapp.view.fragments.chronometer;
 
 import android.os.Bundle;
 

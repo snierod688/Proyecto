@@ -65,7 +65,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 if (task.isSuccessful()){
 
-                    String id = UUID.randomUUID().toString();
+                    String id = databaseReference.push().getKey();
                     Usuario usuario = new Usuario(id, username, nombre, correo, password);
                     databaseReference.child("Usuario").child(id).setValue(usuario);
 

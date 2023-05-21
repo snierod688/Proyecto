@@ -1,66 +1,136 @@
 package com.example.energymapp.view.fragments.stats;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.energymapp.R;
+import com.example.energymapp.databinding.FragmentCreateRoutineBinding;
+import com.example.energymapp.databinding.FragmentStatsBinding;
+import com.example.energymapp.model.MedidasUsuario;
+import com.example.energymapp.view.fragments.routines.ExercisesFragment;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link StatsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class StatsFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private FragmentStatsBinding binding;
+    private DatabaseReference databaseReference;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private String idUsuario;
+    private String altura;
+    private String peso;
+    private String biceps;
+    private String cintura;
+    private String pecho;
+    private String muslo;
 
-    public StatsFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment StatsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static StatsFragment newInstance(String param1, String param2) {
-        StatsFragment fragment = new StatsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_stats, container, false);
+        binding = FragmentStatsBinding.inflate(getLayoutInflater());
+
+        binding.btnCalcularMetabolismo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MetabolismFragment fragment = new MetabolismFragment();
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.container, fragment).commit();
+            }
+        });
+
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+
+        obtenerIdUsuario();
+        Log.i("RES", idUsuario);
+        guardarMedidas();
+        obtenerMedidas(idUsuario);
+
+        return binding.getRoot();
+    }
+
+    //Obtenemos el ID del usuario que se ha registrado
+    private void obtenerIdUsuario() {
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("usuario", Context.MODE_PRIVATE);
+        idUsuario = sharedPreferences.getString("IdUsuario", String.valueOf(Context.MODE_PRIVATE));
+    }
+
+    private void guardarMedidas(){
+
+        binding.btnGuardarMedidas.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String altura = binding.etAltura.getText().toString().trim();
+                String peso = binding.etPeso.getText().toString().trim();
+                String biceps = binding.etBiceps.getText().toString().trim();
+                String cintura = binding.etCintura.getText().toString().trim();
+                String pecho = binding.etPecho.getText().toString().trim();
+                String muslo = binding.etMuslo.getText().toString().trim();
+
+                if (altura.isEmpty() || peso.isEmpty() || biceps.isEmpty() || cintura.isEmpty() ||
+                        pecho.isEmpty() || muslo.isEmpty()){
+                    Snackbar.make(binding.containerProgreso, "Hay campos vacíos", Snackbar.LENGTH_LONG).show();
+                }else{
+                    guardarEnBaseDatos(altura, peso, biceps, cintura, pecho, muslo);
+                }
+
+            }
+        });
+
+    }
+
+    private void guardarEnBaseDatos(String altura, String peso, String biceps, String cintura, String pecho, String muslo) {
+
+        MedidasUsuario medidasUsuario = new MedidasUsuario(altura, peso, biceps, cintura, pecho, muslo);
+        databaseReference.child("Medidas").child(idUsuario).setValue(medidasUsuario);
+    }
+
+    private void obtenerMedidas(String idUsuario){
+        databaseReference.child("Medidas").child(idUsuario).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                if (snapshot.exists()){
+                    altura = snapshot.child("altura").getValue().toString();
+                    binding.etAltura.setText(altura);
+
+                    peso = snapshot.child("peso").getValue().toString();
+                    binding.etPeso.setText(peso);
+
+                    biceps = snapshot.child("biceps").getValue().toString();
+                    binding.etBiceps.setText(biceps);
+
+                    cintura = snapshot.child("cintura").getValue().toString();
+                    binding.etCintura.setText(cintura);
+
+                    pecho = snapshot.child("pecho").getValue().toString();
+                    binding.etPecho.setText(pecho);
+
+                    muslo = snapshot.child("muslo").getValue().toString();
+                    binding.etMuslo.setText(muslo);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }

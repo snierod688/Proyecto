@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -31,6 +32,9 @@ public class LoginActivity extends AppCompatActivity {
     private String email;
     private String password;
 
+    private String idUsuario;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +43,7 @@ public class LoginActivity extends AppCompatActivity {
 
         // Se inicializan las instancias de Firebase
         mAuth = FirebaseAuth.getInstance();
-        databaseReference = FirebaseDatabase.getInstance().getReference();
+        databaseReference = FirebaseDatabase.getInstance().getReference("Usuario");
 
         iniciarSesion();
         goToRegistro();
@@ -49,10 +53,10 @@ public class LoginActivity extends AppCompatActivity {
         }*/
     }
 
-    private void guardarIdUsuario() {
+    private void guardarIdUsuario(String id) {
         SharedPreferences sharedPreferences = getSharedPreferences("usuario", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        String idUsuario = obtenerIdUsuario();
+        editor.putString("IdUsuario", id);
         editor.commit();
 
     }
@@ -70,6 +74,27 @@ public class LoginActivity extends AppCompatActivity {
                     Snackbar.make(binding.loginActivity, "Hay campos vacíos", Snackbar.LENGTH_LONG).show();
                 } else {
                     login(email, password);
+                    String emailIntroducido = binding.etEmail.getText().toString().trim();
+                    if (!emailIntroducido.isEmpty()){
+                        databaseReference.orderByChild("email").equalTo(emailIntroducido).addValueEventListener(new ValueEventListener() {
+                            //snapshot contiene los valores que coincidern con el email
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                                    idUsuario = dataSnapshot.getKey();
+                                    guardarIdUsuario(idUsuario);
+
+                                    Log.i("RESULTADOS", idUsuario);
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+
+                            }
+                        });
+                    }
                 }
             }
         });
@@ -81,6 +106,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onComplete(@NonNull Task<AuthResult> task) {
 
                 if (task.isSuccessful()) {
+
                     Snackbar.make(binding.loginActivity, "BIENVENIDO", Snackbar.LENGTH_LONG).show();
                     Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                     startActivity(intent);
@@ -102,31 +128,52 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private String obtenerIdUsuario(){
+    /*private String obtenerIdUsuario(){
 
-        final String[] id = new String[1];
-        databaseReference.child("Usuario").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
+        *//*String emailIntroducido = binding.etEmail.getText().toString().trim();
 
-                if (snapshot.exists()){
-                    String emailGuardado = snapshot.child("email").getValue().toString();
+        if (email.equals(emailIntroducido)){
 
-                    if (binding.etEmail.getText().toString().equals(emailGuardado)){
-                         id[0] = snapshot.child("id").getValue().toString();
+            databaseReference.child("Usuario").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                    for (DataSnapshot dataSnapshot: snapshot.get){
+                        Usuario usuario = snapshot.getValue(Usuario.class);
+                        String id = usuario.getId();
                     }
-
                 }
 
-            }
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
 
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });
 
-            }
-        });
+        }*//*
 
-        return id[0];
-    }
+        String emailIntroducido = binding.etEmail.getText().toString().trim();
+        if (!emailIntroducido.isEmpty()){
+            databaseReference.orderByChild("email").equalTo(emailIntroducido).addValueEventListener(new ValueEventListener() {
+                //snapshot contiene los valores que coincidern con el email
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                    for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                        id = dataSnapshot.getKey();
+                        Log.i("RESULTADOS", id);
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
+
+        return id;
+    }*/
+
 
 }

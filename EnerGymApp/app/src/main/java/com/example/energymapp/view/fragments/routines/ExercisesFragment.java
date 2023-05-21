@@ -2,65 +2,67 @@ package com.example.energymapp.view.fragments.routines;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.energymapp.R;
+import com.example.energymapp.adapters.ExercisesAdapter;
+import com.example.energymapp.databinding.FragmentExercisesBinding;
+import com.example.energymapp.model.Ejercicio;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ExercisesFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.List;
+import java.util.UUID;
+
 public class ExercisesFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private FragmentExercisesBinding binding;
+    private ExercisesAdapter adapter;
+    private static final int numIds = 7;
+    private DatabaseReference databaseReference;
 
     public ExercisesFragment() {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ExercisesFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ExercisesFragment newInstance(String param1, String param2) {
-        ExercisesFragment fragment = new ExercisesFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_exercises, container, false);
+        binding = FragmentExercisesBinding.inflate(getLayoutInflater());
+        databaseReference = FirebaseDatabase.getInstance().getReference();
+
+        //crearLista();
+
+        /*adapter = new ExercisesAdapter(cargarLista());
+        binding.rvEjercicios.setAdapter(adapter);*/
+
+        return binding.getRoot();
+    }
+
+    private void crearLista() {
+
+        String id1 = UUID.randomUUID().toString();
+        Ejercicio ejercicio1 = new Ejercicio("Press de banca");
+        databaseReference.child("Ejercicio").child(id1).setValue(ejercicio1);
+
+        String id2 = UUID.randomUUID().toString();
+        Ejercicio ejercicio2 = new Ejercicio("Press de banca inclinado");
+        databaseReference.child("Ejercicio").child(id2).setValue(ejercicio2);
+
+        String id3 = UUID.randomUUID().toString();
+        Ejercicio ejercicio3 = new Ejercicio("Press de banca declinado");
+        databaseReference.child("Ejercicio").child(id3).setValue(ejercicio3);
+
+        String id4 = UUID.randomUUID().toString();
+        Ejercicio ejercicio4 = new Ejercicio("Aperturas en máquina");
+        databaseReference.child("Ejercicio").child(id4).setValue(ejercicio4);
+
     }
 }

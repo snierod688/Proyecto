@@ -1,14 +1,248 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/light_blue3"
+    android:id="@+id/containerProgreso"
     tools:context=".view.fragments.stats.StatsFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:id="@+id/txtProgress"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/mina_regular"
+        android:gravity="center"
+        android:text="PROGRESO"
+        android:textColor="@color/gray1"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-</FrameLayout>
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:background="@color/dark_blue"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/txtProgress"
+        app:layout_constraintVertical_bias="0.234">
+
+        <TextView
+            android:id="@+id/txtMedidas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:fontFamily="@font/mina_regular"
+            android:gravity="center"
+            android:text="Medidas"
+            android:textColor="@color/light_blue"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/txtAltura"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/mina_regular"
+            android:gravity="center"
+            android:text="Altura (cm)"
+            android:textColor="@color/light_blue"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtMedidas" />
+
+        <EditText
+            android:id="@+id/etAltura"
+            android:layout_width="55dp"
+            android:layout_height="26dp"
+            android:background="@drawable/custom_metabolism_edittext"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            app:layout_constraintBottom_toBottomOf="@+id/txtAltura"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.12"
+            app:layout_constraintStart_toEndOf="@+id/txtAltura"
+            app:layout_constraintTop_toTopOf="@+id/txtAltura"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:id="@+id/txtPeso"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/mina_regular"
+            android:gravity="center"
+            android:text="Peso (kg)"
+            android:textColor="@color/light_blue"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/etAltura"
+            app:layout_constraintTop_toBottomOf="@+id/txtMedidas" />
+
+        <EditText
+            android:id="@+id/etPeso"
+            android:layout_width="55dp"
+            android:layout_height="26dp"
+            android:background="@drawable/custom_metabolism_edittext"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            app:layout_constraintBottom_toBottomOf="@+id/txtAltura"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.75"
+            app:layout_constraintStart_toEndOf="@+id/txtPeso"
+            app:layout_constraintTop_toTopOf="@+id/txtPeso"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <TextView
+            android:id="@+id/txtBiceps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/mina_regular"
+            android:gravity="center"
+            android:text="Bíceps (cm)"
+            android:textColor="@color/light_blue"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtAltura" />
+
+        <EditText
+            android:id="@+id/etBiceps"
+            android:layout_width="55dp"
+            android:layout_height="26dp"
+            android:background="@drawable/custom_metabolism_edittext"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            app:layout_constraintBottom_toBottomOf="@+id/txtBiceps"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.12"
+            app:layout_constraintStart_toEndOf="@+id/txtBiceps"
+            app:layout_constraintTop_toTopOf="@+id/txtBiceps"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:id="@+id/txtCintura"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/mina_regular"
+            android:gravity="center"
+            android:text="Cintura (cm)"
+            android:textColor="@color/light_blue"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/etBiceps"
+            app:layout_constraintTop_toBottomOf="@+id/txtAltura" />
+
+        <EditText
+            android:id="@+id/etCintura"
+            android:layout_width="55dp"
+            android:layout_height="26dp"
+            android:background="@drawable/custom_metabolism_edittext"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            app:layout_constraintBottom_toBottomOf="@+id/txtCintura"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.463"
+            app:layout_constraintStart_toEndOf="@+id/txtCintura"
+            app:layout_constraintTop_toTopOf="@+id/txtCintura"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:id="@+id/txtPecho"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/mina_regular"
+            android:gravity="center"
+            android:text="Pecho (cm)"
+            android:textColor="@color/light_blue"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/txtBiceps" />
+
+        <EditText
+            android:id="@+id/etPecho"
+            android:layout_width="55dp"
+            android:layout_height="26dp"
+            android:background="@drawable/custom_metabolism_edittext"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            app:layout_constraintBottom_toBottomOf="@+id/txtPecho"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.128"
+            app:layout_constraintStart_toEndOf="@+id/txtPecho"
+            app:layout_constraintTop_toTopOf="@+id/txtPecho"
+            app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:id="@+id/txtMuslo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/mina_regular"
+            android:gravity="center"
+            android:text="Muslo (cm)"
+            android:textColor="@color/light_blue"
+            android:textSize="16sp"
+            app:layout_constraintStart_toEndOf="@+id/etPecho"
+            app:layout_constraintTop_toBottomOf="@+id/txtBiceps" />
+
+        <EditText
+            android:id="@+id/etMuslo"
+            android:layout_width="55dp"
+            android:layout_height="26dp"
+            android:background="@drawable/custom_metabolism_edittext"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black"
+            app:layout_constraintBottom_toBottomOf="@+id/txtMuslo"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.62"
+            app:layout_constraintStart_toEndOf="@+id/txtMuslo"
+            app:layout_constraintTop_toTopOf="@+id/txtMuslo"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <Button
+            android:id="@+id/btnGuardarMedidas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:backgroundTint="@color/light_blue2"
+            android:text="GUARDAR MEDIDAS"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/txtPecho" />
+
+        <Button
+            android:id="@+id/btnCalcularMetabolismo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@color/light_blue2"
+            android:text="CALCULAR METABOLISMO BASAL"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnGuardarMedidas" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
