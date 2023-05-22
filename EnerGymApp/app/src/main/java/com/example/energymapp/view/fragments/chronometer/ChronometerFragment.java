@@ -1,66 +1,115 @@
 package com.example.energymapp.view.fragments.chronometer;
 
+import android.animation.ObjectAnimator;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.os.CountDownTimer;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.energymapp.R;
+import com.example.energymapp.databinding.FragmentChronometerBinding;
+import com.example.energymapp.databinding.FragmentStatsBinding;
+import com.google.android.material.snackbar.Snackbar;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ChronometerFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class ChronometerFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public ChronometerFragment() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ChronometerFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static ChronometerFragment newInstance(String param1, String param2) {
-        ChronometerFragment fragment = new ChronometerFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+    private FragmentChronometerBinding binding;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_chronometer, container, false);
+        binding = FragmentChronometerBinding.inflate(getLayoutInflater());
+
+        comprobarCampos();
+
+        return binding.getRoot();
+
     }
+
+    private void comprobarCampos() {
+        binding.btnStart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String tiempo = binding.etTiempo.getText().toString().trim();
+                String repeticiones = binding.etReps.getText().toString().trim();
+                String descanso = binding.etDescanso.getText().toString().trim();
+
+                if (tiempo.isEmpty() || repeticiones.isEmpty() || descanso.isEmpty()){
+                    Snackbar.make(binding.containerCronometro, "Hay campos vacíos", Snackbar.LENGTH_LONG).show();
+                }else{
+                    iniciarCronomentro(tiempo, repeticiones, descanso);
+                }
+            }
+        });
+
+
+    }
+
+    private void iniciarCronomentro(String tiempo, String repeticiones, String descanso) {
+
+        int time = Integer.parseInt(tiempo);
+        final int reps = Integer.parseInt(repeticiones);
+        final int rest = Integer.parseInt(descanso);
+
+        final int[] duracionTotal = {(time * reps) + (rest * reps - 1)};
+        final int maxProgress = 100;
+
+        binding.progressBar.setMax(maxProgress);
+        binding.progressBar.setProgress(0);
+        binding.progressBar.setVisibility(View.VISIBLE);
+        binding.txtTimer.setVisibility(View.VISIBLE);
+        binding.btnStart.setEnabled(false);
+
+        new CountDownTimer(duracionTotal[0] * 1000L, 1000){
+
+            int repeticionActual = 1;
+            int duracionActual = time;
+            int progresoActual = 0;
+
+            @Override
+            public void onTick(long millisUntilFinished) {
+
+                if (duracionActual > 0){
+                    binding.txtTimer.setText("Repetición: " + repeticionActual + "\nTiempo: " + duracionActual + " s");
+                    duracionActual--;
+                    progresoActual += maxProgress / (time * reps);
+                    binding.progressBar.setProgress(progresoActual);
+
+                }else{
+                    binding.txtTimer.setText("Descanso: " + duracionActual);
+                    duracionActual = time;
+                    repeticionActual++;
+                    progresoActual += maxProgress / (time * reps);
+                    binding.progressBar.setProgress(progresoActual);
+
+                    if (repeticionActual <= reps){
+                        duracionTotal[0] += rest;
+                    }
+                }
+            }
+
+            @Override
+            public void onFinish() {
+
+                binding.txtTimer.setText("Fin de la serie");
+                binding.progressBar.setProgress(100);
+                Snackbar.make(binding.containerCronometro, "Temporizador terminado", Snackbar.LENGTH_LONG).show();
+
+                binding.btnStart.setEnabled(true);
+
+            }
+        }.start();
+
+
+
+    }
+
+
+
 }

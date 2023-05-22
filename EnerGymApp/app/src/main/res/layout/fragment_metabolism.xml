@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/light_blue3"
+    android:id="@+id/containerMetabolismo"
     tools:context=".view.fragments.stats.MetabolismFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -205,6 +206,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Sedentaria"
+                    android:layout_margin="3dp"
+                    android:paddingStart="5dp"
+                    android:button="@drawable/custom_activity_level_radiobutton"
                     android:textColor="@color/light_blue"
                     android:layout_gravity="center"/>
 
@@ -213,6 +217,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Ligera"
+                    android:layout_margin="3dp"
+                    android:paddingStart="5dp"
+                    android:button="@drawable/custom_activity_level_radiobutton"
                     android:textColor="@color/light_blue"
                     android:layout_gravity="center"/>
 
@@ -221,6 +228,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Moderada"
+                    android:button="@drawable/custom_activity_level_radiobutton"
+                    android:layout_margin="3dp"
+                    android:paddingStart="5dp"
                     android:textColor="@color/light_blue"
                     android:layout_gravity="center"/>
 
@@ -229,6 +239,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Intensa"
+                    android:layout_margin="3dp"
+                    android:paddingStart="5dp"
+                    android:button="@drawable/custom_activity_level_radiobutton"
                     android:textColor="@color/light_blue"
                     android:layout_gravity="center"/>
             </RadioGroup>
@@ -240,6 +253,7 @@
                 android:layout_marginTop="16dp"
                 android:backgroundTint="@color/green"
                 android:text="Calcular"
+                android:textSize="18sp"
                 android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

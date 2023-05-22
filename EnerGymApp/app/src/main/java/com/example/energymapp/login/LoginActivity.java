@@ -128,52 +128,6 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    /*private String obtenerIdUsuario(){
-
-        *//*String emailIntroducido = binding.etEmail.getText().toString().trim();
-
-        if (email.equals(emailIntroducido)){
-
-            databaseReference.child("Usuario").addValueEventListener(new ValueEventListener() {
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                    for (DataSnapshot dataSnapshot: snapshot.get){
-                        Usuario usuario = snapshot.getValue(Usuario.class);
-                        String id = usuario.getId();
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-
-        }*//*
-
-        String emailIntroducido = binding.etEmail.getText().toString().trim();
-        if (!emailIntroducido.isEmpty()){
-            databaseReference.orderByChild("email").equalTo(emailIntroducido).addValueEventListener(new ValueEventListener() {
-                //snapshot contiene los valores que coincidern con el email
-                @Override
-                public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                    for (DataSnapshot dataSnapshot: snapshot.getChildren()){
-                        id = dataSnapshot.getKey();
-                        Log.i("RESULTADOS", id);
-                    }
-                }
-
-                @Override
-                public void onCancelled(@NonNull DatabaseError error) {
-
-                }
-            });
-        }
-
-        return id;
-    }*/
 
 
 }
