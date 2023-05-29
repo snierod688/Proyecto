@@ -8,6 +8,8 @@ public class Ejercicio {
         this.nombre = nombre;
     }
 
+    public Ejercicio(){}
+
     public String getNombre() {
         return nombre;
     }

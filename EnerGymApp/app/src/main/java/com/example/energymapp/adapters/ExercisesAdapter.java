@@ -23,10 +23,19 @@ public class ExercisesAdapter extends RecyclerView.Adapter<ExercisesAdapter.View
         this.ejerciciosList = ejerciciosList;
     }
 
+    public static class ViewHolder extends RecyclerView.ViewHolder{
+
+        private TextView nombreEjercicio;
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            nombreEjercicio = itemView.findViewById(R.id.txtExerciseName);
+        }
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_routine, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_exercise, parent, false);
         ExercisesAdapter.ViewHolder viewHolder = new ExercisesAdapter.ViewHolder(view);
 
         return viewHolder;
@@ -42,12 +51,5 @@ public class ExercisesAdapter extends RecyclerView.Adapter<ExercisesAdapter.View
         return ejerciciosList.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
 
-        private TextView nombreEjercicio;
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-            nombreEjercicio = itemView.findViewById(R.id.txtExerciseName);
-        }
-    }
 }
