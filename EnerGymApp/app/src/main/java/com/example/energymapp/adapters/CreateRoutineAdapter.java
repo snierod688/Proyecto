@@ -16,6 +16,17 @@ import java.util.List;
 
 public class CreateRoutineAdapter extends RecyclerView.Adapter<CreateRoutineAdapter.ViewHolder>{
 
+    public static class ViewHolder extends RecyclerView.ViewHolder{
+
+        private TextView nombreEjercicio;
+
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+
+            nombreEjercicio = itemView.findViewById(R.id.txtExercise);
+        }
+    }
+
     public List<Serie> serie;
 
     public CreateRoutineAdapter(List<Serie> serie){
@@ -34,6 +45,8 @@ public class CreateRoutineAdapter extends RecyclerView.Adapter<CreateRoutineAdap
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        holder.nombreEjercicio.setText(serie.get(position).getNombreEjercicio());
+
     }
 
     @Override
@@ -41,11 +54,5 @@ public class CreateRoutineAdapter extends RecyclerView.Adapter<CreateRoutineAdap
         return serie.size();
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder{
 
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-
-        }
-    }
 }

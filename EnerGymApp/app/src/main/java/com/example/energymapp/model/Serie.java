@@ -8,5 +8,15 @@ public class Serie {
     private String numReps;
     private String peso;
 
+    public Serie(String nombreEjercicio){
+        this.nombreEjercicio = nombreEjercicio;
+    }
 
+    public String getNombreEjercicio() {
+        return nombreEjercicio;
+    }
+
+    public void setNombreEjercicio(String nombreEjercicio) {
+        this.nombreEjercicio = nombreEjercicio;
+    }
 }

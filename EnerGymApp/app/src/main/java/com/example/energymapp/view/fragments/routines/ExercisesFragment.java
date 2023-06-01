@@ -1,9 +1,13 @@
 package com.example.energymapp.view.fragments.routines;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.util.Log;
@@ -11,6 +15,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.energymapp.ExerciseRecyclerViewInterface;
+import com.example.energymapp.R;
+import com.example.energymapp.adapters.CreateRoutineAdapter;
 import com.example.energymapp.adapters.ExercisesAdapter;
 import com.example.energymapp.databinding.FragmentExercisesBinding;
 import com.example.energymapp.model.Ejercicio;
@@ -29,6 +36,7 @@ public class ExercisesFragment extends Fragment {
     private FragmentExercisesBinding binding;
     private ExercisesAdapter adapter;
     private DatabaseReference databaseReference;
+    private List<Ejercicio> ejercicioList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,13 +45,37 @@ public class ExercisesFragment extends Fragment {
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
         //crearLista();
+        ejercicioList = new ArrayList<>();
+        obtenerEjercicios();
 
-        adapter = new ExercisesAdapter(obtenerEjercicios());
+        adapter = new ExercisesAdapter(ejercicioList);
+
+        adapter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String ejercicio = ejercicioList.get(binding.rvEjercicios.getChildAdapterPosition(v)).getNombre();
+                Log.i("ej", ejercicio);
+                guardarEjercicioSeleccionado(ejercicio);
+
+                CreateRoutineFragment fragment = new CreateRoutineFragment();
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.container, fragment).commit();
+            }
+        });
 
         binding.rvEjercicios.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.rvEjercicios.setAdapter(adapter);
 
         return binding.getRoot();
+    }
+
+
+    private void guardarEjercicioSeleccionado(String nombreEjercicio) {
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("nombreEjercicio", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("ejercicio", nombreEjercicio);
+        editor.commit();
     }
 
     private void crearLista() {
@@ -109,7 +141,7 @@ public class ExercisesFragment extends Fragment {
 
     private List<Ejercicio> obtenerEjercicios() {
 
-        List<Ejercicio> ejercicioList = new ArrayList<>();
+        ejercicioList = new ArrayList<>();
 
         ejercicioList.add(new Ejercicio("Press de banca"));
         ejercicioList.add(new Ejercicio("Press de banca inclinado"));
