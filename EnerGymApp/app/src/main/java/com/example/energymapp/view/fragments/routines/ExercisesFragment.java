@@ -4,10 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.util.Log;
@@ -15,28 +12,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.energymapp.ExerciseRecyclerViewInterface;
-import com.example.energymapp.R;
-import com.example.energymapp.adapters.CreateRoutineAdapter;
 import com.example.energymapp.adapters.ExercisesAdapter;
 import com.example.energymapp.databinding.FragmentExercisesBinding;
 import com.example.energymapp.model.Ejercicio;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+import com.example.energymapp.model.NombreEjercicio;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 public class ExercisesFragment extends Fragment {
 
     private FragmentExercisesBinding binding;
     private ExercisesAdapter adapter;
     private DatabaseReference databaseReference;
-    private List<Ejercicio> ejercicioList;
+    private List<NombreEjercicio> nombreEjercicioList;
+    private List<Ejercicio> listaEjerciciosRutina;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,23 +36,25 @@ public class ExercisesFragment extends Fragment {
         binding = FragmentExercisesBinding.inflate(getLayoutInflater());
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
-        //crearLista();
-        ejercicioList = new ArrayList<>();
+        String idUsuario = obtenerIdUsuario();
+
+        crearLista();
+        nombreEjercicioList = new ArrayList<>();
+        listaEjerciciosRutina = new ArrayList<>();
         obtenerEjercicios();
 
-        adapter = new ExercisesAdapter(ejercicioList);
+        adapter = new ExercisesAdapter(nombreEjercicioList);
 
         adapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String ejercicio = ejercicioList.get(binding.rvEjercicios.getChildAdapterPosition(v)).getNombre();
+                String ejercicio = nombreEjercicioList.get(binding.rvEjercicios.getChildAdapterPosition(v)).getNombre();
+
                 Log.i("ej", ejercicio);
                 guardarEjercicioSeleccionado(ejercicio);
 
-                CreateRoutineFragment fragment = new CreateRoutineFragment();
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.replace(R.id.container, fragment).commit();
+                //CreateRoutineFragment fragment = new CreateRoutineFragment();
+
             }
         });
 
@@ -80,38 +74,38 @@ public class ExercisesFragment extends Fragment {
 
     private void crearLista() {
 
-        databaseReference.child("Ejercicio").push().setValue(new Ejercicio("Press de banca"));
-        databaseReference.child("Ejercicio").push().setValue(new Ejercicio("Press de banca inclinado"));
-        databaseReference.child("Ejercicio").push().setValue(new Ejercicio("Press de banca declinado"));
-        databaseReference.child("Ejercicio").push().setValue(new Ejercicio("Press de banca con mancuernas"));
-        databaseReference.child("Ejercicio").push().setValue(new Ejercicio("Aperturas en máquina"));
-        databaseReference.child("Ejercicio").push().setValue(new Ejercicio("Cruce de cables"));
-        databaseReference.child("Ejercicio").push().setValue(new Ejercicio("Elevaciones laterales de hombro"));
-        databaseReference.child("Ejercicio").push().setValue(new Ejercicio("Press militar"));
-        databaseReference.child("Ejercicio").push().setValue(new Ejercicio("Fondos"));
-        databaseReference.child("Ejercicio").push().setValue(new Ejercicio("Press francés"));
-        databaseReference.child("Ejercicio").push().setValue(new Ejercicio("Extensión de tríceps"));
-        databaseReference.child("Ejercicio").push().setValue(new Ejercicio("Remo sentado con cable"));
-        databaseReference.child("Ejercicio").push().setValue(new Ejercicio("Remo en T"));
-        databaseReference.child("Ejercicio").push().setValue(new Ejercicio("Jalón al pecho"));
-        databaseReference.child("Ejercicio").push().setValue(new Ejercicio("Pulldown"));
-        databaseReference.child("Ejercicio").push().setValue(new Ejercicio("Extensión de espalda"));
-        databaseReference.child("Ejercicio").push().setValue(new Ejercicio("Vuelos posteriores"));
-        databaseReference.child("Ejercicio").push().setValue(new Ejercicio("Curl predicador"));
-        databaseReference.child("Ejercicio").push().setValue(new Ejercicio("Curl martillo"));
-        databaseReference.child("Ejercicio").push().setValue(new Ejercicio("Curl de bíceps"));
-        databaseReference.child("Ejercicio").push().setValue(new Ejercicio("Sentadilla"));
-        databaseReference.child("Ejercicio").push().setValue(new Ejercicio("Extensión de cuádriceps"));
-        databaseReference.child("Ejercicio").push().setValue(new Ejercicio("Curl de piernas tumbado"));
-        databaseReference.child("Ejercicio").push().setValue(new Ejercicio("Curl de piernas sentado"));
-        databaseReference.child("Ejercicio").push().setValue(new Ejercicio("Prensa"));
-        databaseReference.child("Ejercicio").push().setValue(new Ejercicio("Hip trust"));
-        databaseReference.child("Ejercicio").push().setValue(new Ejercicio("Abducción de piernas"));
-        databaseReference.child("Ejercicio").push().setValue(new Ejercicio("Adducción de piernas"));
-        databaseReference.child("Ejercicio").push().setValue(new Ejercicio("Gemelos"));
-        databaseReference.child("Ejercicio").push().setValue(new Ejercicio("Sit up"));
-        databaseReference.child("Ejercicio").push().setValue(new Ejercicio("Plancha"));
-        databaseReference.child("Ejercicio").push().setValue(new Ejercicio("Russian Twist"));
+        databaseReference.child("Nombre Ejercicio").push().setValue(new NombreEjercicio("Press de banca"));
+        databaseReference.child("Nombre Ejercicio").push().setValue(new NombreEjercicio("Press de banca inclinado"));
+        databaseReference.child("Nombre Ejercicio").push().setValue(new NombreEjercicio("Press de banca declinado"));
+        databaseReference.child("Nombre Ejercicio").push().setValue(new NombreEjercicio("Press de banca con mancuernas"));
+        databaseReference.child("Nombre Ejercicio").push().setValue(new NombreEjercicio("Aperturas en máquina"));
+        databaseReference.child("Nombre Ejercicio").push().setValue(new NombreEjercicio("Cruce de cables"));
+        databaseReference.child("Nombre Ejercicio").push().setValue(new NombreEjercicio("Elevaciones laterales de hombro"));
+        databaseReference.child("Nombre Ejercicio").push().setValue(new NombreEjercicio("Press militar"));
+        databaseReference.child("Nombre Ejercicio").push().setValue(new NombreEjercicio("Fondos"));
+        databaseReference.child("Nombre Ejercicio").push().setValue(new NombreEjercicio("Press francés"));
+        databaseReference.child("Nombre Ejercicio").push().setValue(new NombreEjercicio("Extensión de tríceps"));
+        databaseReference.child("Nombre Ejercicio").push().setValue(new NombreEjercicio("Remo sentado con cable"));
+        databaseReference.child("Nombre Ejercicio").push().setValue(new NombreEjercicio("Remo en T"));
+        databaseReference.child("Nombre Ejercicio").push().setValue(new NombreEjercicio("Jalón al pecho"));
+        databaseReference.child("Nombre Ejercicio").push().setValue(new NombreEjercicio("Pulldown"));
+        databaseReference.child("Nombre Ejercicio").push().setValue(new NombreEjercicio("Extensión de espalda"));
+        databaseReference.child("Nombre Ejercicio").push().setValue(new NombreEjercicio("Vuelos posteriores"));
+        databaseReference.child("Nombre Ejercicio").push().setValue(new NombreEjercicio("Curl predicador"));
+        databaseReference.child("Nombre Ejercicio").push().setValue(new NombreEjercicio("Curl martillo"));
+        databaseReference.child("Nombre Ejercicio").push().setValue(new NombreEjercicio("Curl de bíceps"));
+        databaseReference.child("Nombre Ejercicio").push().setValue(new NombreEjercicio("Sentadilla"));
+        databaseReference.child("Nombre Ejercicio").push().setValue(new NombreEjercicio("Extensión de cuádriceps"));
+        databaseReference.child("Nombre Ejercicio").push().setValue(new NombreEjercicio("Curl de piernas tumbado"));
+        databaseReference.child("Nombre Ejercicio").push().setValue(new NombreEjercicio("Curl de piernas sentado"));
+        databaseReference.child("Nombre Ejercicio").push().setValue(new NombreEjercicio("Prensa"));
+        databaseReference.child("Nombre Ejercicio").push().setValue(new NombreEjercicio("Hip trust"));
+        databaseReference.child("Nombre Ejercicio").push().setValue(new NombreEjercicio("Abducción de piernas"));
+        databaseReference.child("Nombre Ejercicio").push().setValue(new NombreEjercicio("Adducción de piernas"));
+        databaseReference.child("Nombre Ejercicio").push().setValue(new NombreEjercicio("Gemelos"));
+        databaseReference.child("Nombre Ejercicio").push().setValue(new NombreEjercicio("Sit up"));
+        databaseReference.child("Nombre Ejercicio").push().setValue(new NombreEjercicio("Plancha"));
+        databaseReference.child("Nombre Ejercicio").push().setValue(new NombreEjercicio("Russian Twist"));
     }
 
     /*private List<Ejercicio> obtenerLista(){
@@ -139,43 +133,53 @@ public class ExercisesFragment extends Fragment {
          return ejercicioList;
     }*/
 
-    private List<Ejercicio> obtenerEjercicios() {
+    private List<NombreEjercicio> obtenerEjercicios() {
 
-        ejercicioList = new ArrayList<>();
+        nombreEjercicioList = new ArrayList<>();
 
-        ejercicioList.add(new Ejercicio("Press de banca"));
-        ejercicioList.add(new Ejercicio("Press de banca inclinado"));
-        ejercicioList.add(new Ejercicio("Press de banca declinado"));
-        ejercicioList.add(new Ejercicio("Press de banca con mancuernas"));
-        ejercicioList.add(new Ejercicio("Aperturas en máquina"));
-        ejercicioList.add(new Ejercicio("Cruce de cables"));
-        ejercicioList.add(new Ejercicio("Elevaciones laterales de hombro"));
-        ejercicioList.add(new Ejercicio("Press militar"));
-        ejercicioList.add(new Ejercicio("Fondos"));
-        ejercicioList.add(new Ejercicio("Press francés"));
-        ejercicioList.add(new Ejercicio("Extensión de tríceps"));
-        ejercicioList.add(new Ejercicio("Remo sentado con cable"));
-        ejercicioList.add(new Ejercicio("Remo en T"));
-        ejercicioList.add(new Ejercicio("Jalón al pecho"));
-        ejercicioList.add(new Ejercicio("Pulldown"));
-        ejercicioList.add(new Ejercicio("Extensión de espalda"));
-        ejercicioList.add(new Ejercicio("Vuelos posteriores"));
-        ejercicioList.add(new Ejercicio("Curl predicador"));
-        ejercicioList.add(new Ejercicio("Curl martillo"));
-        ejercicioList.add(new Ejercicio("Curl de bíceps"));
-        ejercicioList.add(new Ejercicio("Sentadilla"));
-        ejercicioList.add(new Ejercicio("Extensión de cuádriceps"));
-        ejercicioList.add(new Ejercicio("Curl de piernas tumbado"));
-        ejercicioList.add(new Ejercicio("Curl de piernas sentado"));
-        ejercicioList.add(new Ejercicio("Prensa"));
-        ejercicioList.add(new Ejercicio("Hip trust"));
-        ejercicioList.add(new Ejercicio("Abducción de piernas"));
-        ejercicioList.add(new Ejercicio("Adducción de piernas"));
-        ejercicioList.add(new Ejercicio("Gemelos"));
-        ejercicioList.add(new Ejercicio("Sit up"));
-        ejercicioList.add(new Ejercicio("Plancha"));
-        ejercicioList.add(new Ejercicio("Russian Twist"));
+        nombreEjercicioList.add(new NombreEjercicio("Press de banca"));
+        nombreEjercicioList.add(new NombreEjercicio("Press de banca inclinado"));
+        nombreEjercicioList.add(new NombreEjercicio("Press de banca declinado"));
+        nombreEjercicioList.add(new NombreEjercicio("Press de banca con mancuernas"));
+        nombreEjercicioList.add(new NombreEjercicio("Aperturas en máquina"));
+        nombreEjercicioList.add(new NombreEjercicio("Cruce de cables"));
+        nombreEjercicioList.add(new NombreEjercicio("Elevaciones laterales de hombro"));
+        nombreEjercicioList.add(new NombreEjercicio("Press militar"));
+        nombreEjercicioList.add(new NombreEjercicio("Fondos"));
+        nombreEjercicioList.add(new NombreEjercicio("Press francés"));
+        nombreEjercicioList.add(new NombreEjercicio("Extensión de tríceps"));
+        nombreEjercicioList.add(new NombreEjercicio("Remo sentado con cable"));
+        nombreEjercicioList.add(new NombreEjercicio("Remo en T"));
+        nombreEjercicioList.add(new NombreEjercicio("Jalón al pecho"));
+        nombreEjercicioList.add(new NombreEjercicio("Pulldown"));
+        nombreEjercicioList.add(new NombreEjercicio("Extensión de espalda"));
+        nombreEjercicioList.add(new NombreEjercicio("Vuelos posteriores"));
+        nombreEjercicioList.add(new NombreEjercicio("Curl predicador"));
+        nombreEjercicioList.add(new NombreEjercicio("Curl martillo"));
+        nombreEjercicioList.add(new NombreEjercicio("Curl de bíceps"));
+        nombreEjercicioList.add(new NombreEjercicio("Sentadilla"));
+        nombreEjercicioList.add(new NombreEjercicio("Extensión de cuádriceps"));
+        nombreEjercicioList.add(new NombreEjercicio("Curl de piernas tumbado"));
+        nombreEjercicioList.add(new NombreEjercicio("Curl de piernas sentado"));
+        nombreEjercicioList.add(new NombreEjercicio("Prensa"));
+        nombreEjercicioList.add(new NombreEjercicio("Hip trust"));
+        nombreEjercicioList.add(new NombreEjercicio("Abducción de piernas"));
+        nombreEjercicioList.add(new NombreEjercicio("Adducción de piernas"));
+        nombreEjercicioList.add(new NombreEjercicio("Gemelos"));
+        nombreEjercicioList.add(new NombreEjercicio("Sit up"));
+        nombreEjercicioList.add(new NombreEjercicio("Plancha"));
+        nombreEjercicioList.add(new NombreEjercicio("Russian Twist"));
 
-        return ejercicioList;
+        return nombreEjercicioList;
+    }
+
+    private String obtenerIdUsuario(){
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("usuario", Context.MODE_PRIVATE);
+        String idUsuario = sharedPreferences.getString("IdUsuario", "");
+
+
+        Log.i("iduser", idUsuario);
+
+        return idUsuario;
     }
 }

@@ -1,34 +1,24 @@
 package com.example.energymapp.adapters;
 
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.energymapp.ExerciseRecyclerViewInterface;
 import com.example.energymapp.R;
-import com.example.energymapp.databinding.ItemExerciseBinding;
-import com.example.energymapp.model.Ejercicio;
-import com.example.energymapp.model.Serie;
-import com.example.energymapp.view.fragments.routines.CreateRoutineFragment;
-import com.example.energymapp.view.fragments.routines.ExercisesFragment;
+import com.example.energymapp.model.NombreEjercicio;
 
 import java.util.List;
 
 public class ExercisesAdapter extends RecyclerView.Adapter<ExercisesAdapter.ViewHolder> implements View.OnClickListener {
 
-    public List<Ejercicio> ejerciciosList;
+    public List<NombreEjercicio> ejerciciosList;
     private View.OnClickListener listener;
 
-    public ExercisesAdapter(List<Ejercicio> ejerciciosList){
+    public ExercisesAdapter(List<NombreEjercicio> ejerciciosList){
         this.ejerciciosList = ejerciciosList;
     }
 

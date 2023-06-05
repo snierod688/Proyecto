@@ -673,7 +673,7 @@
         android:layout_marginEnd="70dp"
         android:background="@drawable/custom_button_add"
         android:fontFamily="@font/mina_regular"
-        android:text="Agregar serie"
+        android:text="Agregar ejercicio"
         android:textAllCaps="false"
         android:textColor="@color/white"
         android:textSize="15sp"
