@@ -61,6 +61,7 @@ public class CreateRoutineFragment extends Fragment {
         binding.rvRutina.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.rvRutina.setAdapter(adapter);
 
+        //Añade ejercicios
         binding.btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,6 +79,7 @@ public class CreateRoutineFragment extends Fragment {
                                 @SuppressLint({"MissingInflatedId", "LocalSuppress"}) EditText ejercicio = view.findViewById(R.id.etNombreEjercicio);
                                 nombreEjercicio = ejercicio.getText().toString().toUpperCase();
 
+                                //Se guarda en una lista para mostrarlos en el RecyclerView de ejercicios
                                 ejercicioList.add(new Ejercicio(nombreEjercicio));
                                 adapter.updateList(ejercicioList);
 
@@ -110,6 +112,7 @@ public class CreateRoutineFragment extends Fragment {
 
         });
 
+        //Guarda la rutina
         binding.btnSaveRoutine.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,7 +126,6 @@ public class CreateRoutineFragment extends Fragment {
 
                 View view = inflater.inflate(R.layout.routine_name_dialog, null);
 
-
                 if (!nombreEjercicio.isEmpty()){
                     builder.setView(view)
 
@@ -134,8 +136,7 @@ public class CreateRoutineFragment extends Fragment {
                                     EditText nombre = view.findViewById(R.id.etNombreRutina);
                                     String nombreRutina = nombre.getText().toString();
 
-                                    Rutina rutina = new Rutina(nombreRutina);
-                                    Ejercicio ejercicio = new Ejercicio(nombreEjercicio);
+                                    Rutina rutina = new Rutina(idUsuario, nombreRutina);
 
                                     //Guarda los datos de la rutina
                                     databaseReference.child("Rutina").child(idUsuario).push().setValue(rutina);
@@ -145,10 +146,15 @@ public class CreateRoutineFragment extends Fragment {
                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                                             for (DataSnapshot dataSnapshot: snapshot.getChildren()){
                                                 idRutina = dataSnapshot.getKey();
-                                                //guardarIdUsuario(idRutina);
+                                                //guardarIdRutina(idRutina);
+
+
 
                                                 Log.i("rutina", idRutina);
                                             }
+
+                                            /*Ejercicio ejerciciosBD = new Ejercicio(idUsuario, idRutina, nombreEjercicio);
+                                            ejercicioListBD.add(ejerciciosBD);*/
 
                                             //Guarda los datos de cada ejercicio de la rutina
                                             databaseReference.child("Ejercicios").child(idUsuario).child(idRutina).setValue(ejercicioList);
@@ -175,13 +181,10 @@ public class CreateRoutineFragment extends Fragment {
                     Snackbar.make(binding.containerCreateRoutine, "Debes añadir un ejercicio al menos", Snackbar.LENGTH_LONG).show();
                 }
 
-
-
                 RoutinesFragment fragment = new RoutinesFragment();
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
                 transaction.replace(R.id.container, fragment).commit();
-
 
             }
         });
@@ -245,4 +248,22 @@ public class CreateRoutineFragment extends Fragment {
 
         return idUsuario;
     }
+
+    private void guardarIdRutina(String id) {
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("rutina", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("IdRutina", id);
+        editor.commit();
+
+    }
+    private String obtenerIdRutina() {
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("rutina", Context.MODE_PRIVATE);
+        String idRutina = sharedPreferences.getString("IdRutina", "");
+
+
+        Log.i("iduser", idRutina);
+
+        return idRutina;
+    }
+
 }

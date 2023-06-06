@@ -2,20 +2,32 @@ package com.example.energymapp.model;
 
 public class Ejercicio {
 
-    private String idSerie;
     private String idRutina;
+    private String idUsuario;
     private String nombreEjercicio;
     private String numReps;
     private String peso;
+
+    public Ejercicio(String idUsuario, String idRutina, String nombreEjercicio){
+        this.idUsuario = idUsuario;
+        this.idRutina = idRutina;
+        this.nombreEjercicio = nombreEjercicio;
+    }
+
+    public Ejercicio(String nombreEjercicio, String idUsuario, String idRutina, String numReps, String peso){
+        this.nombreEjercicio = nombreEjercicio;
+        this.numReps = numReps;
+        this.peso = peso;
+        this.idRutina = idRutina;
+        this.idUsuario = idUsuario;
+    }
 
     public Ejercicio(String nombreEjercicio){
         this.nombreEjercicio = nombreEjercicio;
     }
 
-    public Ejercicio(String nombreEjercicio, String numReps, String peso){
-        this.nombreEjercicio = nombreEjercicio;
-        this.numReps = numReps;
-        this.peso = peso;
+    public Ejercicio(){
+
     }
 
     public String getNombreEjercicio() {
@@ -24,14 +36,6 @@ public class Ejercicio {
 
     public void setNombreEjercicio(String nombreEjercicio) {
         this.nombreEjercicio = nombreEjercicio;
-    }
-
-    public String getIdSerie() {
-        return idSerie;
-    }
-
-    public void setIdSerie(String idSerie) {
-        this.idSerie = idSerie;
     }
 
     public String getIdRutina() {

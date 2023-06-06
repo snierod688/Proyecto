@@ -10,6 +10,7 @@ import com.example.energymapp.databinding.ActivityMainBinding;
 import com.example.energymapp.view.fragments.chronometer.ChronometerFragment;
 import com.example.energymapp.view.fragments.routines.RoutinesFragment;
 import com.example.energymapp.view.fragments.stats.StatsFragment;
+import com.example.energymapp.view.fragments.train.RoutineTrainFragment;
 import com.example.energymapp.view.fragments.train.TrainFragment;
 
 public class MainActivity extends AppCompatActivity{
@@ -35,7 +36,7 @@ public class MainActivity extends AppCompatActivity{
                     return true;
                 }
                 if (item.getItemId() == R.id.train){
-                    replaceFragment(new TrainFragment());
+                    replaceFragment(new RoutineTrainFragment());
                     return true;
                 }
                 if (item.getItemId() == R.id.stats){

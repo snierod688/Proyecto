@@ -1,16 +1,37 @@
 package com.example.energymapp.model;
 
 public class Rutina {
+
+    private String idUsuario;
+    private String idRutina;
     private String nombreRutina;
     private String totalReps;
     private String totalPeso;
     private String tiempo;
 
-    public Rutina(String nombreRutina){
+    public Rutina(String idUsuario, String nombreRutina){
+
         this.nombreRutina = nombreRutina;
+        this.idUsuario = idUsuario;
     }
     public Rutina(){
 
+    }
+
+    public String getIdUsuario() {
+        return idUsuario;
+    }
+
+    public void setIdUsuario(String idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    public String getIdRutina() {
+        return idRutina;
+    }
+
+    public void setIdRutina(String idRutina) {
+        this.idRutina = idRutina;
     }
 
     public String getNombreRutina() {

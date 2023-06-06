@@ -2,6 +2,7 @@ package com.example.energymapp.view.fragments.routines;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -19,6 +20,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.energymapp.R;
 import com.example.energymapp.adapters.CreateRoutineAdapter;
@@ -26,6 +28,7 @@ import com.example.energymapp.adapters.RoutineAdapter;
 import com.example.energymapp.databinding.FragmentRoutinesBinding;
 import com.example.energymapp.model.Ejercicio;
 import com.example.energymapp.model.Rutina;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -56,6 +59,80 @@ public class RoutinesFragment extends Fragment {
         binding.rvAllRoutines.setAdapter(adapter);
         idUsuario = obtenerIdUsuario();
 
+        adapter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String nombreRutina = listaRutinas.get(binding.rvAllRoutines.getChildAdapterPosition(v)).getNombreRutina();
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                LayoutInflater inflater = requireActivity().getLayoutInflater();
+
+                Log.i("nombre", nombreRutina);
+
+                View view = inflater.inflate(R.layout.edit_routine_dialog, null);
+
+                builder.setView(view)
+                        .setPositiveButton("Editar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int id) {
+
+                                @SuppressLint({"MissingInflatedId", "LocalSuppress"}) EditText nombre = view.findViewById(R.id.etNombreRutinaEdit);
+                                String nuevoNombreRutina = nombre.getText().toString();
+
+                                if (!nuevoNombreRutina.isEmpty()){
+                                    databaseReference.child("Rutina").child(idUsuario).orderByChild("nombreRutina").equalTo(nombreRutina).addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+
+                                                Rutina rutina = new Rutina(idUsuario, nuevoNombreRutina);
+                                                databaseReference.child("Rutina").child(idUsuario).child(dataSnapshot.getKey()).setValue(rutina);
+                                                Snackbar.make(binding.containerAllRoutines, "Rutina actualizada", Snackbar.LENGTH_LONG).show();
+                                            }
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+                                    });
+                                }
+
+                            }
+                        })
+
+                        .setNeutralButton("Borrar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                databaseReference.child("Rutina").child(idUsuario).orderByChild("nombreRutina").equalTo(nombreRutina).addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+
+                                            databaseReference.child("Rutina").child(idUsuario).child(dataSnapshot.getKey()).removeValue();
+                                            Snackbar.make(binding.containerAllRoutines, "Rutina eliminada", Snackbar.LENGTH_LONG).show();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+                            }
+                        })
+                        .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                            }
+                        });
+
+                builder.show();
+            }
+        });
+
+        //Muestra la lista de rutinas
         databaseReference.child("Rutina").child(idUsuario).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -70,7 +147,7 @@ public class RoutinesFragment extends Fragment {
 
                             Log.i("nRutina", nombreRutina);
 
-                            listaRutinas.add(new Rutina(nombreRutina));
+                            listaRutinas.add(new Rutina(idUsuario, nombreRutina));
                             adapter.updateList(listaRutinas);
                         }
 
@@ -110,61 +187,5 @@ public class RoutinesFragment extends Fragment {
         Log.i("iduser", idUsuario);
 
         return idUsuario;
-    }
-
-    private void editRoutine(){
-        View view = getLayoutInflater().inflate(R.layout.item_all_routines, null);
-        Button btnEdit = view.findViewById(R.id.btnEditRoutine);
-
-        btnEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                LayoutInflater inflater = requireActivity().getLayoutInflater();
-
-                View view = inflater.inflate(R.layout.exercise_name_dialog, null);
-
-                builder.setView(view)
-                        .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int id) {
-
-                                @SuppressLint({"MissingInflatedId", "LocalSuppress"}) EditText nombreRutina = view.findViewById(R.id.etNombreEjercicio);
-                                String rutina = nombreRutina.getText().toString().toUpperCase();
-
-                                databaseReference.child("Rutina").child(idUsuario).orderByChild("nombreRutina").equalTo(nombreRutina).addValueEventListener(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        for (DataSnapshot dataSnapshot: snapshot.getChildren()){
-                                            idRutina = dataSnapshot.getKey();
-                                            //guardarIdUsuario(idRutina);
-
-                                            Log.i("rutina", idRutina);
-                                        }
-
-                                        //Guarda los datos de cada ejercicio de la rutina
-                                        databaseReference.child("Ejercicios").child(idUsuario).child(idRutina).setValue(ejercicioList);
-
-                                    }
-
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError error) {
-
-                                    }
-                                });
-                            }
-                        })
-                        .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int id) {
-                                dialog.dismiss();
-                            }
-                        });
-
-                builder.show();
-
-
-            }
-        });
     }
 }

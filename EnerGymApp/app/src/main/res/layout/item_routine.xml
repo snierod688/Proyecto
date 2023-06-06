@@ -662,25 +662,4 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-    <Button
-        android:id="@+id/btnAddSet"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginStart="70dp"
-        android:layout_marginEnd="70dp"
-        android:background="@drawable/custom_button_add"
-        android:fontFamily="@font/mina_regular"
-        android:text="Agregar ejercicio"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/containerSet5"/>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

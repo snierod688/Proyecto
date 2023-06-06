@@ -10,7 +10,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <TextView
-        android:id="@+id/txtRoutine"
+        android:id="@+id/txtNombreRutina"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/dark_blue"
@@ -24,52 +24,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Brazo" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/blue2"
-        app:layout_constraintTop_toBottomOf="@id/txtRoutine">
-
-        <Button
-            android:id="@+id/btnEditRoutine"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:background="@drawable/custom_action_button"
-            android:backgroundTint="@color/yellow"
-            android:fontFamily="@font/mina_regular"
-            android:textStyle="bold"
-            android:paddingStart="52dp"
-            android:paddingEnd="52dp"
-            android:text="Editar"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            android:textAllCaps="false"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0" />
-
-        <Button
-            android:id="@+id/btnDeleteRoutine"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            android:background="@drawable/custom_action_button"
-            android:backgroundTint="@color/red"
-            android:fontFamily="@font/mina_regular"
-            android:paddingStart="40dp"
-            android:paddingEnd="40dp"
-            android:text="Eliminar"
-            android:textAllCaps="false"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

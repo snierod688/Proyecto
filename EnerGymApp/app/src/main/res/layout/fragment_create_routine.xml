@@ -44,7 +44,7 @@
             app:layout_constraintTop_toBottomOf="@id/txtCreate">
 
             <TextView
-                android:id="@+id/txtRoutine"
+                android:id="@+id/txtNombreRutina"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/mina_regular"
@@ -74,7 +74,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/txtRoutine" />
+                app:layout_constraintTop_toBottomOf="@+id/txtNombreRutina" />
 
             <!--inicialmente el recycler esta en gone hasta que se añada el primer ejercicio -->
 

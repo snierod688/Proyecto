@@ -28,7 +28,6 @@ public class ExercisesFragment extends Fragment {
     private ExercisesAdapter adapter;
     private DatabaseReference databaseReference;
     private List<NombreEjercicio> nombreEjercicioList;
-    private List<Ejercicio> listaEjerciciosRutina;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -40,7 +39,6 @@ public class ExercisesFragment extends Fragment {
 
         crearLista();
         nombreEjercicioList = new ArrayList<>();
-        listaEjerciciosRutina = new ArrayList<>();
         obtenerEjercicios();
 
         adapter = new ExercisesAdapter(nombreEjercicioList);
