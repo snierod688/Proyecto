@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/light_blue3"
     android:orientation="vertical"
-    android:id="@+id/containerCreateRoutine"
+    android:id="@+id/containerTrain"
     tools:context=".view.fragments.routines.CreateRoutineFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout

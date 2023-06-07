@@ -5,21 +5,25 @@ public class Ejercicio {
     private String idRutina;
     private String idUsuario;
     private String nombreEjercicio;
-    private String numReps;
-    private String peso;
 
-    public Ejercicio(String idUsuario, String idRutina, String nombreEjercicio){
-        this.idUsuario = idUsuario;
-        this.idRutina = idRutina;
-        this.nombreEjercicio = nombreEjercicio;
-    }
+    private int numRepsTotal;
+    private int pesoTotal;
 
-    public Ejercicio(String nombreEjercicio, String idUsuario, String idRutina, String numReps, String peso){
+    private String reps1;
+    private String reps2;
+    private String reps3;
+    private String reps4;
+
+    private String peso1;
+    private String peso2;
+    private String peso3;
+    private String peso4;
+
+    public Ejercicio(String nombreEjercicio, int numRepsTotal, int pesoTotal){
         this.nombreEjercicio = nombreEjercicio;
-        this.numReps = numReps;
-        this.peso = peso;
-        this.idRutina = idRutina;
-        this.idUsuario = idUsuario;
+        this.numRepsTotal = numRepsTotal;
+        this.pesoTotal = pesoTotal;
+
     }
 
     public Ejercicio(String nombreEjercicio){
@@ -29,6 +33,14 @@ public class Ejercicio {
     public Ejercicio(){
 
     }
+
+    /*public Ejercicio(String nombreEjercicio, String reps1, String reps2, String reps3, String reps4){
+        this.nombreEjercicio = nombreEjercicio;
+        this.reps1 = reps1;
+        this.reps2 = reps2;
+        this.reps3 = reps3;
+        this.reps4 = reps4;
+    }*/
 
     public String getNombreEjercicio() {
         return nombreEjercicio;
@@ -46,19 +58,91 @@ public class Ejercicio {
         this.idRutina = idRutina;
     }
 
-    public String getNumReps() {
-        return numReps;
+    public String getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setNumReps(String numReps) {
-        this.numReps = numReps;
+    public void setIdUsuario(String idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
-    public String getPeso() {
-        return peso;
+    public int getNumRepsTotal() {
+        return numRepsTotal;
     }
 
-    public void setPeso(String peso) {
-        this.peso = peso;
+    public void setNumRepsTotal(int numRepsTotal) {
+        this.numRepsTotal = numRepsTotal;
+    }
+
+    public int getPesoTotal() {
+        return pesoTotal;
+    }
+
+    public void setPesoTotal(int pesoTotal) {
+        this.pesoTotal = pesoTotal;
+    }
+
+    public String getReps1() {
+        return reps1;
+    }
+
+    public void setReps1(String reps1) {
+        this.reps1 = reps1;
+    }
+
+    public String getReps2() {
+        return reps2;
+    }
+
+    public void setReps2(String reps2) {
+        this.reps2 = reps2;
+    }
+
+    public String getReps3() {
+        return reps3;
+    }
+
+    public void setReps3(String reps3) {
+        this.reps3 = reps3;
+    }
+
+    public String getReps4() {
+        return reps4;
+    }
+
+    public void setReps4(String reps4) {
+        this.reps4 = reps4;
+    }
+
+    public String getPeso1() {
+        return peso1;
+    }
+
+    public void setPeso1(String peso1) {
+        this.peso1 = peso1;
+    }
+
+    public String getPeso2() {
+        return peso2;
+    }
+
+    public void setPeso2(String peso2) {
+        this.peso2 = peso2;
+    }
+
+    public String getPeso3() {
+        return peso3;
+    }
+
+    public void setPeso3(String peso3) {
+        this.peso3 = peso3;
+    }
+
+    public String getPeso4() {
+        return peso4;
+    }
+
+    public void setPeso4(String peso4) {
+        this.peso4 = peso4;
     }
 }

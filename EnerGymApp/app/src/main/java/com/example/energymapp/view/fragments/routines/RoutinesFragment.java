@@ -109,8 +109,10 @@ public class RoutinesFragment extends Fragment {
                                     @Override
                                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                                         for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                                            String idRutina = dataSnapshot.getKey();
 
-                                            databaseReference.child("Rutina").child(idUsuario).child(dataSnapshot.getKey()).removeValue();
+                                            databaseReference.child("Rutina").child(idUsuario).child(idRutina).removeValue();
+                                            databaseReference.child("Ejercicios").child(idUsuario).child(idRutina).removeValue();
                                             Snackbar.make(binding.containerAllRoutines, "Rutina eliminada", Snackbar.LENGTH_LONG).show();
                                         }
                                     }

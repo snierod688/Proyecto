@@ -44,6 +44,7 @@ public class CreateRoutineFragment extends Fragment {
     private List<Ejercicio> ejercicioList;
     private String nombreEjercicio;
     private String idRutina;
+    private int repsTotal, pesoTotal;
 
     public CreateRoutineFragment() {
         // Required empty public constructor
@@ -80,7 +81,7 @@ public class CreateRoutineFragment extends Fragment {
                                 nombreEjercicio = ejercicio.getText().toString().toUpperCase();
 
                                 //Se guarda en una lista para mostrarlos en el RecyclerView de ejercicios
-                                ejercicioList.add(new Ejercicio(nombreEjercicio));
+                                ejercicioList.add(new Ejercicio(nombreEjercicio, repsTotal, pesoTotal));
                                 adapter.updateList(ejercicioList);
 
                                 //Rutina rutina = new Rutina(nombreRutina);
