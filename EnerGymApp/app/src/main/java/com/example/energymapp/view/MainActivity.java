@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import com.example.energymapp.R;
@@ -16,6 +17,7 @@ import com.example.energymapp.view.fragments.routines.RoutinesFragment;
 import com.example.energymapp.view.fragments.info.StatsFragment;
 import com.example.energymapp.view.fragments.train.RoutineTrainFragment;
 import com.example.energymapp.view.fragments.train.TrainFragment;
+import com.google.android.material.snackbar.Snackbar;
 
 public class MainActivity extends AppCompatActivity{
 
@@ -28,6 +30,7 @@ public class MainActivity extends AppCompatActivity{
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
 
+        Snackbar.make(binding.activityMain, "BIENVENIDO", Snackbar.LENGTH_LONG).show();
         getSupportFragmentManager().beginTransaction().replace(R.id.container, routinesFragment).commit();
 
         binding.bottonNavigationBar.setOnItemSelectedListener(item ->  {
@@ -55,6 +58,12 @@ public class MainActivity extends AppCompatActivity{
                             .setPositiveButton("SÍ", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
+
+                                    SharedPreferences sharedPreferences = getSharedPreferences("autoLogin", 0);
+                                    SharedPreferences.Editor editor = sharedPreferences.edit().clear();
+                                    editor.putBoolean("logueado", false);
+                                    editor.commit();
+
                                     Intent i = new Intent(MainActivity.this, LoginActivity.class);
                                     startActivity(i);
                                 }

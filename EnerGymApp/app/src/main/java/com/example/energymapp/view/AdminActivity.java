@@ -48,6 +48,9 @@ public class AdminActivity extends AppCompatActivity {
 
         databaseReference = FirebaseDatabase.getInstance().getReference();
 
+        Snackbar.make(binding.containerAdmin, "BIENVENIDO", Snackbar.LENGTH_LONG).show();
+
+
         listaRutinas = new ArrayList<>();
         adapter = new RoutineAdapter(listaRutinas);
         binding.rvDeleteRoutine.setLayoutManager(new LinearLayoutManager(this));

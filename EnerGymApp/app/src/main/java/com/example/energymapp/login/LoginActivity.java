@@ -49,10 +49,6 @@ public class LoginActivity extends AppCompatActivity {
 
         iniciarSesion();
         goToRegistro();
-        
-        /*if (binding.cbRemember.isChecked()){
-            guardarIdUsuario();
-        }*/
     }
 
     private void guardarIdUsuario(String id) {
@@ -75,6 +71,14 @@ public class LoginActivity extends AppCompatActivity {
                 if (email.isEmpty() || password.isEmpty()) {
                     Snackbar.make(binding.loginActivity, "Hay campos vacíos", Snackbar.LENGTH_LONG).show();
                 } else {
+
+                    if (binding.cbRemember.isChecked()){
+                        SharedPreferences sharedPreferences = getSharedPreferences("autoLogin", 0);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putBoolean("logueado", true);
+                        editor.commit();
+                    }
+
                     login(email, password);
                     emailIntroducido = binding.etEmail.getText().toString().trim();
                     if (!emailIntroducido.isEmpty()){
@@ -116,9 +120,6 @@ public class LoginActivity extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(), MainActivity.class);
                         startActivity(intent);
                     }
-
-                    Snackbar.make(binding.loginActivity, "BIENVENIDO", Snackbar.LENGTH_LONG).show();
-
 
                 } else {
                     Snackbar.make(binding.loginActivity, "El usuario no existe\n¡REGISTRESE!", Snackbar.LENGTH_LONG).show();
