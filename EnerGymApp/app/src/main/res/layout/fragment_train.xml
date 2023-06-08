@@ -87,6 +87,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btnComenzar"
                 tools:listitem="@layout/item_routine"
+                android:visibility="gone"
                 />
 
             <Button

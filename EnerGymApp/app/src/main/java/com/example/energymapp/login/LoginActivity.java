@@ -10,6 +10,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.energymapp.view.AdminActivity;
 import com.example.energymapp.view.MainActivity;
 import com.example.energymapp.databinding.ActivityLoginBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -33,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
     private String password;
 
     private String idUsuario;
+    private String emailIntroducido;
 
 
     @Override
@@ -74,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
                     Snackbar.make(binding.loginActivity, "Hay campos vacíos", Snackbar.LENGTH_LONG).show();
                 } else {
                     login(email, password);
-                    String emailIntroducido = binding.etEmail.getText().toString().trim();
+                    emailIntroducido = binding.etEmail.getText().toString().trim();
                     if (!emailIntroducido.isEmpty()){
                         databaseReference.orderByChild("email").equalTo(emailIntroducido).addValueEventListener(new ValueEventListener() {
                             //snapshot contiene los valores que coincidern con el email
@@ -107,9 +109,16 @@ public class LoginActivity extends AppCompatActivity {
 
                 if (task.isSuccessful()) {
 
+                    if (emailIntroducido.equals("admin@gmail.com")){
+                        Intent i = new Intent(LoginActivity.this, AdminActivity.class);
+                        startActivity(i);
+                    }else {
+                        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                        startActivity(intent);
+                    }
+
                     Snackbar.make(binding.loginActivity, "BIENVENIDO", Snackbar.LENGTH_LONG).show();
-                    Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                    startActivity(intent);
+
 
                 } else {
                     Snackbar.make(binding.loginActivity, "El usuario no existe\n¡REGISTRESE!", Snackbar.LENGTH_LONG).show();

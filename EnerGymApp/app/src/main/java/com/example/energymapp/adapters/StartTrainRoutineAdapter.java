@@ -54,6 +54,7 @@ public class StartTrainRoutineAdapter extends RecyclerView.Adapter<StartTrainRou
         holder.etPeso3.setText(ejercicio.get(position).getPeso3());
         holder.etPeso4.setText(ejercicio.get(position).getPeso4());
 
+
         /*holder.txtAnterior1.setText(holder.etReps1 + "x" + holder.etPeso1);
         holder.txtAnterior2.setText(holder.etReps2 + "x" + holder.etPeso2);
         holder.txtAnterior3.setText(holder.etReps3 + "x" + holder.etPeso3);
@@ -88,11 +89,6 @@ public class StartTrainRoutineAdapter extends RecyclerView.Adapter<StartTrainRou
             etPeso3 = itemView.findViewById(R.id.etWeight3);
             etPeso4 = itemView.findViewById(R.id.etWeight4);
 
-            txtAnterior1 = itemView.findViewById(R.id.txtPreviousSet);
-            txtAnterior2 = itemView.findViewById(R.id.txtPreviousSet2);
-            txtAnterior3 = itemView.findViewById(R.id.txtPreviousSet3);
-            txtAnterior4 = itemView.findViewById(R.id.txtPreviousSet4);
-
             //Reps1
             etReps1.addTextChangedListener(new TextWatcher() {
                 @Override
@@ -101,7 +97,6 @@ public class StartTrainRoutineAdapter extends RecyclerView.Adapter<StartTrainRou
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    ejercicio.get(getAdapterPosition()).setReps1(etReps1.getText().toString());
                     ejercicio.get(getAdapterPosition()).setReps1(etReps1.getText().toString());
 
                 }

@@ -3,22 +3,23 @@ package com.example.energymapp.view;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.example.energymapp.R;
 import com.example.energymapp.databinding.ActivityMainBinding;
+import com.example.energymapp.login.LoginActivity;
 import com.example.energymapp.view.fragments.chronometer.ChronometerFragment;
 import com.example.energymapp.view.fragments.routines.RoutinesFragment;
-import com.example.energymapp.view.fragments.stats.StatsFragment;
+import com.example.energymapp.view.fragments.info.StatsFragment;
 import com.example.energymapp.view.fragments.train.RoutineTrainFragment;
 import com.example.energymapp.view.fragments.train.TrainFragment;
 
 public class MainActivity extends AppCompatActivity{
 
     private RoutinesFragment routinesFragment = new RoutinesFragment();
-    private TrainFragment trainFragment = new TrainFragment();
-    private StatsFragment statsFragment = new StatsFragment();
-    private ChronometerFragment chronometerFragment = new ChronometerFragment();
     private ActivityMainBinding binding;
 
     @Override
@@ -47,9 +48,27 @@ public class MainActivity extends AppCompatActivity{
                     replaceFragment(new ChronometerFragment());
                     return true;
                 }
+                if (item.getItemId() == R.id.close){
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    builder.setMessage("¿Quieres cerrar sesión")
+                            .setPositiveButton("SÍ", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent i = new Intent(MainActivity.this, LoginActivity.class);
+                                    startActivity(i);
+                                }
+                            })
+                            .setNegativeButton("NO", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
+                    builder.show();
+                }
 
                 return true;
-
         });
     }
 

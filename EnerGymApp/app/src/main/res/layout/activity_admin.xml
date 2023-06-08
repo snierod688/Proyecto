@@ -6,7 +6,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/light_blue3"
-    tools:context=".view.fragments.routines.AdminScreenFragment">
+    android:id="@+id/containerAdmin"
+    tools:context=".view.AdminActivity">
 
     <TextView
         android:id="@+id/txtUserRoutines"
@@ -25,16 +26,33 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvDeleteRoutine"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/bottonNavigationBarAdmin"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txtUserRoutines"
         app:layout_constraintVertical_bias="0.0"
-        tools:listitem="@layout/item_delete_routine" />
+        tools:listitem="@layout/item_all_routines" />
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottonNavigationBarAdmin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/dark_blue"
+        android:elevation="2dp"
+        app:itemIconSize="35dp"
+        app:itemIconTint="@color/light_blue"
+        app:itemTextColor="@color/light_blue"
+        app:labelVisibilityMode="unlabeled"
+        app:layout_constraintTop_toBottomOf="@+id/rvDeleteRoutine"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:menu="@menu/bottom_nav_admin_menu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

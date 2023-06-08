@@ -16,6 +16,9 @@
         <item android:id="@+id/chronometer"
             android:title="Cronómetro"
             android:icon="@drawable/reloj"/>
+        <item android:id="@+id/close"
+            android:title="Cerrar Sesión"
+            android:icon="@drawable/cerrar_sesion"/>
     </group>
 
 

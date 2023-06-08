@@ -1,6 +1,8 @@
 package com.example.energymapp.view.fragments.train;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -66,12 +68,21 @@ public class TrainFragment extends Fragment {
 
         binding.txtNombreRutina.setText(obtenerNombreRutina());
 
+        binding.btnComenzar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.rvRutinaTrain.setVisibility(View.VISIBLE);
+            }
+        });
+
         //Consulta en la Base de datos para obtener el ID de la rutina
         databaseReference.child("Rutina").child(idUsuario).orderByChild("nombreRutina").equalTo(obtenerNombreRutina()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot: snapshot.getChildren()){
                     idRutina = dataSnapshot.getKey();
+                    guardarIdRutina(idRutina);
+
 
                     Log.i("idRutina", idRutina);
                 }
@@ -84,10 +95,21 @@ public class TrainFragment extends Fragment {
                             Ejercicio ejercicio = dataSnapshot.getValue(Ejercicio.class);
                             nombreEjercicio = ejercicio.getNombreEjercicio();
 
+                            String peso1 = ejercicio.getPeso1();
+                            String peso2 = ejercicio.getPeso2();
+                            String peso3 = ejercicio.getPeso3();
+                            String peso4 = ejercicio.getPeso4();
+
+                            String reps1 = ejercicio.getReps1();
+                            String reps2 = ejercicio.getReps2();
+                            String reps3 = ejercicio.getReps3();
+                            String reps4 = ejercicio.getReps4();
+
                             Log.i("ejercicio", nombreEjercicio);
 
-                            muestraEjerciciosList.add(new Ejercicio(nombreEjercicio, repsTotal, pesoTotal));
+                            muestraEjerciciosList.add(new Ejercicio(nombreEjercicio, repsTotal, pesoTotal, peso1, peso2, peso3, peso4, reps1, reps2, reps3, reps4));
                             adapter.updateList(muestraEjerciciosList);
+                            binding.btnGuardarDatos.setEnabled(true);
                         }
                     }
 
@@ -107,90 +129,100 @@ public class TrainFragment extends Fragment {
         binding.btnGuardarDatos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Snackbar.make(binding.containerTrain, "HOLA", Snackbar.LENGTH_LONG).show();
 
-                //ejercicioList.clear();
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setMessage("¿Quieres finalizar tu entrenamiento?\n" +
+                                "Se guardarán los datos")
+                        .setPositiveButton("CONFIRMAR", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
 
-                for (int i = 0; i< muestraEjerciciosList.size(); i++){
+                                for (int i = 0; i< muestraEjerciciosList.size(); i++){
+
+                                    int repsInt1 = 0;
+                                    int repsInt2 = 0;
+                                    int repsInt3 = 0;
+                                    int repsInt4 = 0;
+
+                                    int pesoInt1 = 0;
+                                    int pesoInt2 = 0;
+                                    int pesoInt3 = 0;
+                                    int pesoInt4 = 0;
+
+                                    reps1 = StartTrainRoutineAdapter.ejercicio.get(i).getReps1();
+                                    reps2 = StartTrainRoutineAdapter.ejercicio.get(i).getReps2();
+                                    reps3 = StartTrainRoutineAdapter.ejercicio.get(i).getReps3();
+                                    reps4 = StartTrainRoutineAdapter.ejercicio.get(i).getReps3();
+
+                                    peso1 = StartTrainRoutineAdapter.ejercicio.get(i).getPeso1();
+                                    peso2 = StartTrainRoutineAdapter.ejercicio.get(i).getPeso2();
+                                    peso3 = StartTrainRoutineAdapter.ejercicio.get(i).getPeso3();
+                                    peso4 = StartTrainRoutineAdapter.ejercicio.get(i).getPeso4();
 
 
-                    int repsInt1 = 0;
-                    int repsInt2 = 0;
-                    int repsInt3 = 0;
-                    int repsInt4 = 0;
+                                    Log.i("reps", reps1);
 
-                    int pesoInt1 = 0;
-                    int pesoInt2 = 0;
-                    int pesoInt3 = 0;
-                    int pesoInt4 = 0;
+                                    if (!reps1.isEmpty()){
+                                        repsInt1 = Integer.parseInt(reps1);
 
-                    reps1 = StartTrainRoutineAdapter.ejercicio.get(i).getReps1();
-                    reps2 = StartTrainRoutineAdapter.ejercicio.get(i).getReps2();
-                    reps3 = StartTrainRoutineAdapter.ejercicio.get(i).getReps3();
-                    reps4 = StartTrainRoutineAdapter.ejercicio.get(i).getReps3();
+                                    }
 
-                    peso1 = StartTrainRoutineAdapter.ejercicio.get(i).getPeso1();
-                    peso2 = StartTrainRoutineAdapter.ejercicio.get(i).getPeso2();
-                    peso3 = StartTrainRoutineAdapter.ejercicio.get(i).getPeso3();
-                    peso4 = StartTrainRoutineAdapter.ejercicio.get(i).getPeso4();
+                                    if (!reps2.isEmpty()){
+                                        repsInt2 = Integer.parseInt(reps2);
 
+                                    }
 
-                    Log.i("reps", reps1);
+                                    if (!reps3.isEmpty()){
+                                        repsInt3 = Integer.parseInt(reps3);
 
-                    if (!reps1.isEmpty()){
-                        repsInt1 = Integer.parseInt(reps1);
+                                    }
 
-                    }
+                                    if (!reps4.isEmpty()){
+                                        repsInt4 = Integer.parseInt(reps4);
 
-                    if (!reps2.isEmpty()){
-                        repsInt2 = Integer.parseInt(reps2);
+                                    }
 
-                    }
+                                    if (!peso1.isEmpty()){
+                                        pesoInt1 = Integer.parseInt(peso1);
+                                    }
 
-                    if (!reps3.isEmpty()){
-                        repsInt3 = Integer.parseInt(reps3);
+                                    if (!peso2.isEmpty()){
+                                        pesoInt2 = Integer.parseInt(peso2);
+                                    }
 
-                    }
+                                    if (!peso3.isEmpty()){
+                                        pesoInt3 = Integer.parseInt(peso3);
+                                    }
 
-                    if (!reps4.isEmpty()){
-                        repsInt4 = Integer.parseInt(reps4);
+                                    if (!peso4.isEmpty()){
+                                        pesoInt4 = Integer.parseInt(peso4);
+                                    }
 
-                    }
+                                    repsTotal = repsInt1 + repsInt2 + repsInt3 + repsInt4;
+                                    pesoTotal = pesoInt1 + pesoInt2 + pesoInt3 + pesoInt4;
 
-                    if (!peso1.isEmpty()){
-                        pesoInt1 = Integer.parseInt(peso1);
-                    }
+                                    ejercicioListBD.add(new Ejercicio(muestraEjerciciosList.get(i).getNombreEjercicio(), repsTotal, pesoTotal, peso1, peso2, peso3, peso4, reps1, reps2, reps3, reps4));
 
-                    if (!peso2.isEmpty()){
-                        pesoInt2 = Integer.parseInt(peso2);
-                    }
+                                }
 
-                    if (!peso3.isEmpty()){
-                        pesoInt3 = Integer.parseInt(peso3);
-                    }
+                                databaseReference.child("Ejercicios").child(idUsuario).child(idRutina).setValue(ejercicioListBD);
+                                adapter.updateList(ejercicioListBD);
 
-                    if (!peso4.isEmpty()){
-                        pesoInt4 = Integer.parseInt(peso4);
-                    }
+                                //Muestra el fragment con las estadísticas del entrenamiento realizado
+                                TrainStatsFragment fragment = new TrainStatsFragment();
+                                FragmentManager fragmentManager = getFragmentManager();
+                                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                                transaction.replace(R.id.container, fragment).commit();
 
-                    repsTotal = repsInt1 + repsInt2 + repsInt3 + repsInt4;
-                    pesoTotal = pesoInt1 + pesoInt2 + pesoInt3 + pesoInt4;
+                                Snackbar.make(binding.containerTrain, "Rutina actualizada correctamente", Snackbar.LENGTH_LONG).show();
 
-                    ejercicioListBD.add(new Ejercicio(muestraEjerciciosList.get(i).getNombreEjercicio(), repsTotal, pesoTotal));
-
-                }
-
-                databaseReference.child("Ejercicios").child(idUsuario).child(idRutina).setValue(ejercicioListBD);
-                adapter.updateList(ejercicioListBD);
-
-                //Vuelve al fragment donde se encuentran las rutinas para iniciar los entrenamientos
-                RoutineTrainFragment fragment = new RoutineTrainFragment();
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.replace(R.id.container, fragment).commit();
-
-                Snackbar.make(binding.containerTrain, "Rutina actualizada correctamente", Snackbar.LENGTH_LONG).show();
-
+                            }
+                        })
+                        .setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                            }
+                        });
+                builder.show();
             }
         });
 
@@ -215,5 +247,13 @@ public class TrainFragment extends Fragment {
         Log.i("iduser", nombreRutina);
 
         return nombreRutina;
+    }
+
+    private void guardarIdRutina(String id) {
+        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("rutinaID", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("idRutina", id);
+        editor.commit();
+
     }
 }

@@ -6,20 +6,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/light_blue3"
     android:id="@+id/containerMetabolismo"
-    tools:context=".view.fragments.stats.MetabolismFragment">
+    tools:context=".view.fragments.info.MetabolismFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/txtProgress"
+            android:id="@+id/txtInfo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:fontFamily="@font/mina_regular"
             android:gravity="center"
-            android:text="PROGRESO"
+            android:text="INFORMACIÓN"
             android:textColor="@color/gray1"
             android:textSize="36sp"
             android:textStyle="bold"
@@ -42,7 +42,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/txtProgress"
+            app:layout_constraintTop_toBottomOf="@id/txtInfo"
             app:layout_constraintVertical_bias="0.0">
 
             <TextView
@@ -109,6 +109,7 @@
                 android:layout_height="23dp"
                 android:background="@drawable/custom_metabolism_edittext"
                 android:textAlignment="center"
+                android:inputType="number"
                 android:textColor="@color/black"
                 android:textColorHint="@color/black"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -138,6 +139,7 @@
                 android:background="@drawable/custom_metabolism_edittext"
                 android:textAlignment="center"
                 android:textColor="@color/black"
+                android:inputType="number"
                 android:textColorHint="@color/black"
                 app:layout_constraintBottom_toBottomOf="@+id/txtWeight"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -170,6 +172,7 @@
                 android:textAlignment="center"
                 android:textColor="@color/black"
                 android:textColorHint="@color/black"
+                android:inputType="number"
                 app:layout_constraintBottom_toBottomOf="@+id/txtHeight"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.496"
@@ -267,9 +270,7 @@
                 android:fontFamily="@font/mina_regular"
                 android:gravity="center"
                 tools:text="Metabolismo basal: 2000\n
-Calorías para mantener el peso: 3000\n
-Calorías para adelgazar: 2500\n
-Calorías para subir de peso: 3400"
+Calorías para mantener el peso: 3000\"
                 android:textColor="@color/light_blue"
                 android:textSize="16sp"
                 app:layout_constraintBottom_toBottomOf="parent"

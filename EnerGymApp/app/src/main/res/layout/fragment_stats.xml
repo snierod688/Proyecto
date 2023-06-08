@@ -6,16 +6,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/light_blue3"
     android:id="@+id/containerProgreso"
-    tools:context=".view.fragments.stats.StatsFragment">
+    tools:context=".view.fragments.info.StatsFragment">
 
     <TextView
-        android:id="@+id/txtProgress"
+        android:id="@+id/txtInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:fontFamily="@font/mina_regular"
         android:gravity="center"
-        android:text="PROGRESO"
+        android:text="INFORMACIÓN"
         android:textColor="@color/gray1"
         android:textSize="36sp"
         android:textStyle="bold"
@@ -33,7 +33,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtProgress"
+        app:layout_constraintTop_toBottomOf="@id/txtInfo"
         app:layout_constraintVertical_bias="0.234">
 
         <TextView
@@ -241,7 +241,21 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btnGuardarMedidas" />
+            app:layout_constraintTop_toBottomOf="@+id/btnGuardarMedidas"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <Button
+            android:id="@+id/btnMostrarEjercicios"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@color/light_blue2"
+            android:text="MOSTRAR LISTA DE EJERCICIOS"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnCalcularMetabolismo" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

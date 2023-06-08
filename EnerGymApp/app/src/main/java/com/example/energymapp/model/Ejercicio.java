@@ -19,11 +19,18 @@ public class Ejercicio {
     private String peso3;
     private String peso4;
 
-    public Ejercicio(String nombreEjercicio, int numRepsTotal, int pesoTotal){
+    public Ejercicio(String nombreEjercicio, int numRepsTotal, int pesoTotal, String peso1, String peso2, String peso3, String peso4, String reps1, String reps2, String reps3, String reps4){
         this.nombreEjercicio = nombreEjercicio;
         this.numRepsTotal = numRepsTotal;
         this.pesoTotal = pesoTotal;
-
+        this.peso1 = peso1;
+        this.peso2 = peso2;
+        this.peso3 = peso3;
+        this.peso4 = peso4;
+        this.reps1 = reps1;
+        this.reps2 = reps2;
+        this.reps3 = reps3;
+        this.reps4 = reps4;
     }
 
     public Ejercicio(String nombreEjercicio){

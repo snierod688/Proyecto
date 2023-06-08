@@ -14,6 +14,11 @@ public class Rutina {
         this.nombreRutina = nombreRutina;
         this.idUsuario = idUsuario;
     }
+
+    public Rutina(String nombreRutina){
+        this.nombreRutina = nombreRutina;
+    }
+
     public Rutina(){
 
     }

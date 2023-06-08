@@ -105,23 +105,40 @@ public class RoutinesFragment extends Fragment {
                         .setNeutralButton("Borrar", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                databaseReference.child("Rutina").child(idUsuario).orderByChild("nombreRutina").equalTo(nombreRutina).addValueEventListener(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                        for (DataSnapshot dataSnapshot: snapshot.getChildren()){
-                                            String idRutina = dataSnapshot.getKey();
 
-                                            databaseReference.child("Rutina").child(idUsuario).child(idRutina).removeValue();
-                                            databaseReference.child("Ejercicios").child(idUsuario).child(idRutina).removeValue();
-                                            Snackbar.make(binding.containerAllRoutines, "Rutina eliminada", Snackbar.LENGTH_LONG).show();
-                                        }
-                                    }
+                                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                                builder.setMessage("¿Quieres borrar esta rutina?\n" +
+                                        "La acción será irreversible")
+                                        .setPositiveButton("CONFIRMAR", new DialogInterface.OnClickListener() {
+                                            //Obtengo el ID de la rutina
+                                                    @Override
+                                                    public void onClick(DialogInterface dialog, int which) {
+                                                        databaseReference.child("Rutina").child(idUsuario).orderByChild("nombreRutina").equalTo(nombreRutina).addValueEventListener(new ValueEventListener() {
+                                                            @Override
+                                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                                                                    String idRutina = dataSnapshot.getKey();
 
-                                    @Override
-                                    public void onCancelled(@NonNull DatabaseError error) {
+                                                                    databaseReference.child("Rutina").child(idUsuario).child(idRutina).removeValue();
+                                                                    databaseReference.child("Ejercicios").child(idUsuario).child(idRutina).removeValue();
+                                                                    Snackbar.make(binding.containerAllRoutines, "Rutina eliminada", Snackbar.LENGTH_LONG).show();
+                                                                }
+                                                            }
 
-                                    }
-                                });
+                                                            @Override
+                                                            public void onCancelled(@NonNull DatabaseError error) {
+
+                                                            }
+                                                        });
+                                                    }
+                                                })
+                                        .setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        });
+                                builder.show();
                             }
                         })
                         .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {

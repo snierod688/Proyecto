@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.energymapp.R;
+import com.example.energymapp.model.Ejercicio;
 import com.example.energymapp.model.NombreEjercicio;
 
 import java.util.List;
@@ -36,6 +37,11 @@ public class ExercisesAdapter extends RecyclerView.Adapter<ExercisesAdapter.View
             super(itemView);
             nombreEjercicio = itemView.findViewById(R.id.txtExerciseName);
         }
+    }
+
+    public void updateList(List<NombreEjercicio> nombreEjercicioList){
+        ejerciciosList = nombreEjercicioList;
+        notifyDataSetChanged();
     }
 
     @NonNull

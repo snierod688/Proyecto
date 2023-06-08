@@ -1,4 +1,4 @@
-package com.example.energymapp.view.fragments.stats;
+package com.example.energymapp.view.fragments.info;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -15,10 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.energymapp.R;
-import com.example.energymapp.databinding.FragmentCreateRoutineBinding;
 import com.example.energymapp.databinding.FragmentStatsBinding;
 import com.example.energymapp.model.MedidasUsuario;
-import com.example.energymapp.view.fragments.routines.ExercisesFragment;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -49,6 +47,16 @@ public class StatsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 MetabolismFragment fragment = new MetabolismFragment();
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.container, fragment).commit();
+            }
+        });
+
+        binding.btnMostrarEjercicios.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ExercisesFragment fragment = new ExercisesFragment();
                 FragmentManager fragmentManager = getFragmentManager();
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
                 transaction.replace(R.id.container, fragment).commit();

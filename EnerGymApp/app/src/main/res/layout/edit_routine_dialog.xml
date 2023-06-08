@@ -2,8 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:background="@color/dark_blue">
+    android:layout_height="wrap_content">
 
     <TextView
         android:layout_width="match_parent"
@@ -13,7 +12,7 @@
         android:textStyle="bold"
         android:textAlignment="center"
         android:textSize="16sp"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:fontFamily="@font/mina_regular"/>
 
     <TextView
@@ -22,7 +21,7 @@
         android:layout_margin="6dp"
         android:textSize="14sp"
         android:text="Introduce un nombre para la rutina"
-        android:textColor="@color/white"
+        android:textColor="@color/black"
         android:fontFamily="@font/mina_regular"/>
 
     <EditText
@@ -32,7 +31,7 @@
         android:textColor="@color/black"
         android:textSize="14sp"
         android:fontFamily="@font/mina_regular"
-        android:background="@color/light_blue"
+        android:background="@color/gray2"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="6dp"
         android:layout_marginRight="6dp"

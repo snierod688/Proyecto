@@ -46,10 +46,6 @@ public class CreateRoutineFragment extends Fragment {
     private String idRutina;
     private int repsTotal, pesoTotal;
 
-    public CreateRoutineFragment() {
-        // Required empty public constructor
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -61,6 +57,7 @@ public class CreateRoutineFragment extends Fragment {
         idUsuario = obtenerIdUsuario();
         binding.rvRutina.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.rvRutina.setAdapter(adapter);
+
 
         //Añade ejercicios
         binding.btnAdd.setOnClickListener(new View.OnClickListener() {
@@ -79,15 +76,22 @@ public class CreateRoutineFragment extends Fragment {
 
                                 @SuppressLint({"MissingInflatedId", "LocalSuppress"}) EditText ejercicio = view.findViewById(R.id.etNombreEjercicio);
                                 nombreEjercicio = ejercicio.getText().toString().toUpperCase();
+                                String reps1 = "";
+                                String reps2 = "";
+                                String reps3 = "";
+                                String reps4 = "";
+
+                                String peso1 = "";
+                                String peso2 = "";
+                                String peso3 = "";
+                                String peso4 = "";
 
                                 //Se guarda en una lista para mostrarlos en el RecyclerView de ejercicios
-                                ejercicioList.add(new Ejercicio(nombreEjercicio, repsTotal, pesoTotal));
+                                ejercicioList.add(new Ejercicio(nombreEjercicio, repsTotal, pesoTotal, peso1, peso2, peso3, peso4, reps1, reps2, reps3, reps4));
                                 adapter.updateList(ejercicioList);
+                                binding.btnSaveRoutine.setEnabled(true);
 
-                                //Rutina rutina = new Rutina(nombreRutina);
-
-                                //databaseReference.child("Rutina").child(idUsuario).push().setValue(rutina);
-                            }
+                                }
                         })
                         .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
@@ -96,31 +100,13 @@ public class CreateRoutineFragment extends Fragment {
                         });
 
                 builder.show();
-
-                /*ExercisesFragment fragment = new ExercisesFragment();
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.replace(R.id.container, fragment).commit();
-
-
-                ejercicioList = (List<Serie>) getArguments().getSerializable("listaEjercicios");
-                adapter = new CreateRoutineAdapter(ejercicioList);
-                ejercicioList.add(new Serie(obtenerNombreEjercicio()));
-                adapter.updateList(ejercicioList);*/
-
             }
-
-
         });
 
         //Guarda la rutina
         binding.btnSaveRoutine.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                /*String idRutina = databaseReference.push().getKey();
-                Rutina rutina = new Rutina(idUsuario, idRutina, nombreRutina);
-                databaseReference.child("Rutinas").child(idUsuario).child(idRutina).setValue(rutina);*/
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 LayoutInflater inflater = requireActivity().getLayoutInflater();
@@ -147,15 +133,9 @@ public class CreateRoutineFragment extends Fragment {
                                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                                             for (DataSnapshot dataSnapshot: snapshot.getChildren()){
                                                 idRutina = dataSnapshot.getKey();
-                                                //guardarIdRutina(idRutina);
-
-
 
                                                 Log.i("rutina", idRutina);
                                             }
-
-                                            /*Ejercicio ejerciciosBD = new Ejercicio(idUsuario, idRutina, nombreEjercicio);
-                                            ejercicioListBD.add(ejerciciosBD);*/
 
                                             //Guarda los datos de cada ejercicio de la rutina
                                             databaseReference.child("Ejercicios").child(idUsuario).child(idRutina).setValue(ejercicioList);
