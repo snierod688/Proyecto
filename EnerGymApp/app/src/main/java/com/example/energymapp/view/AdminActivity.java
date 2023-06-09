@@ -50,13 +50,20 @@ public class AdminActivity extends AppCompatActivity {
 
         Snackbar.make(binding.containerAdmin, "BIENVENIDO", Snackbar.LENGTH_LONG).show();
 
-
         listaRutinas = new ArrayList<>();
         adapter = new RoutineAdapter(listaRutinas);
         binding.rvDeleteRoutine.setLayoutManager(new LinearLayoutManager(this));
         binding.rvDeleteRoutine.setAdapter(adapter);
 
 
+        deleteRoutine();
+
+        showRoutinesList();
+
+        close();
+    }
+
+    private void deleteRoutine() {
         adapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -143,7 +150,10 @@ public class AdminActivity extends AppCompatActivity {
                 builder1.show();
             }
         });
+    }
 
+    //Muestra una lista con todas las rutinas de todos los usuarios
+    private void showRoutinesList() {
         databaseReference.child("Rutina").addValueEventListener(new ValueEventListener() {
 
             @Override
@@ -199,7 +209,10 @@ public class AdminActivity extends AppCompatActivity {
 
             }
         });
+    }
 
+    //Se cierra la sesión del administrador
+    private void close() {
         binding.bottonNavigationBarAdmin.setOnItemSelectedListener(item ->  {
 
             if (item.getItemId() == R.id.closeAdmin){

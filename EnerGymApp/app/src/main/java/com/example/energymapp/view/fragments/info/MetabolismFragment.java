@@ -26,6 +26,7 @@ public class MetabolismFragment extends Fragment {
         return binding.getRoot();
     }
 
+    //Se comprueba que los campos no estén vacíos
     private void comprobarCampos(){
 
         binding.btnCalculate.setOnClickListener(new View.OnClickListener() {
@@ -48,12 +49,14 @@ public class MetabolismFragment extends Fragment {
         });
     }
 
+    //Calcula el metabolismo basal del usuario según los datos introducidos
     private void calcularMetabolismo(String sexo, String edad, String peso, String altura) {
 
         double metabolismoFormula = (10 * Integer.parseInt(peso)) + (6.25 * Integer.parseInt(altura)) - (5 * Integer.parseInt(edad));
         double metabolismo = 0;
         double metabolismoActividad = 0;
 
+        //Se calcula el metabolismo basal
         if (!(sexo.equalsIgnoreCase("H") || sexo.equalsIgnoreCase("M"))){
             Snackbar.make(binding.containerMetabolismo, "Introduce un parámetro válido", Snackbar.LENGTH_LONG).show();
         }else if (sexo.equalsIgnoreCase("H")){
@@ -66,6 +69,7 @@ public class MetabolismFragment extends Fragment {
             Snackbar.make(binding.containerMetabolismo, "Selecciona un nivel de actividad", Snackbar.LENGTH_LONG).show();
         }else{
 
+            //Se calculan las calorías necesarias para mantener el peso
             if (binding.btnSedentaria.isChecked()){
                 metabolismoActividad = metabolismo * 1.2;
             }else if (binding.btnLigera.isChecked()){
@@ -77,6 +81,7 @@ public class MetabolismFragment extends Fragment {
             }
         }
 
+        //Se pasan los resultados a enteros
         metabolismo = (int) metabolismo;
         metabolismoActividad = (int) metabolismoActividad;
 

@@ -59,6 +59,7 @@ public class MainActivity extends AppCompatActivity{
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
 
+                                    //Se eliminan las credenciales del usuario logueado
                                     SharedPreferences sharedPreferences = getSharedPreferences("autoLogin", 0);
                                     SharedPreferences.Editor editor = sharedPreferences.edit().clear();
                                     editor.putBoolean("logueado", false);

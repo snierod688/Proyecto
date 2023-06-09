@@ -59,6 +59,15 @@ public class RoutinesFragment extends Fragment {
         binding.rvAllRoutines.setAdapter(adapter);
         idUsuario = obtenerIdUsuario();
 
+        editDeleteRoutine();
+        showRoutinesList();
+        showCreateRoutineScreen();
+
+        return binding.getRoot();
+    }
+
+    //Permite editar o borrar la rutina
+    private void editDeleteRoutine() {
         adapter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,30 +86,7 @@ public class RoutinesFragment extends Fragment {
                             @Override
                             public void onClick(DialogInterface dialog, int id) {
 
-                                @SuppressLint({"MissingInflatedId", "LocalSuppress"}) EditText nombre = view.findViewById(R.id.etNombreRutinaEdit);
-                                String nuevoNombreRutina = nombre.getText().toString();
-
-                                if (!nuevoNombreRutina.isEmpty()){
-                                    databaseReference.child("Rutina").child(idUsuario).orderByChild("nombreRutina").equalTo(nombreRutina).addValueEventListener(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                            for (DataSnapshot dataSnapshot: snapshot.getChildren()){
-
-                                                Rutina rutina = new Rutina(idUsuario, nuevoNombreRutina);
-                                                databaseReference.child("Rutina").child(idUsuario).child(dataSnapshot.getKey()).setValue(rutina);
-                                                Snackbar.make(binding.containerAllRoutines, "Rutina actualizada", Snackbar.LENGTH_LONG).show();
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError error) {
-
-                                        }
-                                    });
-                                }else{
-                                    Snackbar.make(binding.containerAllRoutines, "Debes introducir un nuevo nombre para la rutina", Snackbar.LENGTH_LONG).show();
-
-                                }
+                                editRoutine(view, nombreRutina);
 
                             }
                         })
@@ -113,26 +99,9 @@ public class RoutinesFragment extends Fragment {
                                 builder.setMessage("¿Quieres borrar esta rutina?\n" +
                                         "La acción será irreversible")
                                         .setPositiveButton("CONFIRMAR", new DialogInterface.OnClickListener() {
-                                            //Obtengo el ID de la rutina
                                                     @Override
                                                     public void onClick(DialogInterface dialog, int which) {
-                                                        databaseReference.child("Rutina").child(idUsuario).orderByChild("nombreRutina").equalTo(nombreRutina).addValueEventListener(new ValueEventListener() {
-                                                            @Override
-                                                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                                                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
-                                                                    String idRutina = dataSnapshot.getKey();
-
-                                                                    databaseReference.child("Rutina").child(idUsuario).child(idRutina).removeValue();
-                                                                    databaseReference.child("Ejercicios").child(idUsuario).child(idRutina).removeValue();
-                                                                    Snackbar.make(binding.containerAllRoutines, "Rutina eliminada", Snackbar.LENGTH_LONG).show();
-                                                                }
-                                                            }
-
-                                                            @Override
-                                                            public void onCancelled(@NonNull DatabaseError error) {
-
-                                                            }
-                                                        });
+                                                        deleteRoutine(nombreRutina);
                                                     }
                                                 })
                                         .setNegativeButton("CANCELAR", new DialogInterface.OnClickListener() {
@@ -153,8 +122,73 @@ public class RoutinesFragment extends Fragment {
                 builder.show();
             }
         });
+    }
 
-        //Muestra la lista de rutinas
+    //Se borra la rutina
+    private void deleteRoutine(String nombreRutina) {
+        databaseReference.child("Rutina").child(idUsuario).orderByChild("nombreRutina").equalTo(nombreRutina).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                    //Obtengo el ID de la rutina
+                    String idRutina = dataSnapshot.getKey();
+
+                    databaseReference.child("Rutina").child(idUsuario).child(idRutina).removeValue();
+                    databaseReference.child("Ejercicios").child(idUsuario).child(idRutina).removeValue();
+                    Snackbar.make(binding.containerAllRoutines, "Rutina eliminada", Snackbar.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    //Se edita la rutina
+    private void editRoutine(View view, String nombreRutina) {
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) EditText nombre = view.findViewById(R.id.etNombreRutinaEdit);
+        String nuevoNombreRutina = nombre.getText().toString();
+
+        if (!nuevoNombreRutina.isEmpty()){
+            databaseReference.child("Rutina").child(idUsuario).orderByChild("nombreRutina").equalTo(nombreRutina).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+
+                        Rutina rutina = new Rutina(idUsuario, nuevoNombreRutina);
+                        databaseReference.child("Rutina").child(idUsuario).child(dataSnapshot.getKey()).setValue(rutina);
+                        Snackbar.make(binding.containerAllRoutines, "Rutina actualizada", Snackbar.LENGTH_LONG).show();
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }else{
+            Snackbar.make(binding.containerAllRoutines, "Debes introducir un nuevo nombre para la rutina", Snackbar.LENGTH_LONG).show();
+
+        }
+    }
+
+    //Muestra la pantalla que permite añadir ejercicios a la rutina
+    private void showCreateRoutineScreen() {
+        binding.btnCreateRoutine.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CreateRoutineFragment fragment = new CreateRoutineFragment();
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.container, fragment).commit();
+            }
+        });
+    }
+
+    //Muestra la lista de rutinas
+    private void showRoutinesList() {
         databaseReference.child("Rutina").child(idUsuario).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -186,21 +220,9 @@ public class RoutinesFragment extends Fragment {
 
             }
         });
-
-
-        binding.btnCreateRoutine.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CreateRoutineFragment fragment = new CreateRoutineFragment();
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.replace(R.id.container, fragment).commit();
-            }
-        });
-
-        return binding.getRoot();
     }
 
+    //Se obtiene el nombre del usuario logueado
     private String obtenerIdUsuario() {
         SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("usuario", Context.MODE_PRIVATE);
         String idUsuario = sharedPreferences.getString("IdUsuario", "");

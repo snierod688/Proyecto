@@ -58,8 +58,83 @@ public class CreateRoutineFragment extends Fragment {
         binding.rvRutina.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.rvRutina.setAdapter(adapter);
 
+        aniadirEjercicios();
 
-        //Añade ejercicios
+        saveRoutine();
+
+        return binding.getRoot();
+    }
+
+    //Guarda la rutina y sus ejercicios en la base de datos
+    private void saveRoutine() {
+        binding.btnSaveRoutine.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                LayoutInflater inflater = requireActivity().getLayoutInflater();
+
+                View view = inflater.inflate(R.layout.routine_name_dialog, null);
+
+                if (!nombreEjercicio.isEmpty()){
+                    builder.setView(view)
+
+                            .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int id) {
+
+                                    EditText nombre = view.findViewById(R.id.etNombreRutina);
+                                    String nombreRutina = nombre.getText().toString();
+
+                                    Rutina rutina = new Rutina(idUsuario, nombreRutina);
+
+                                    //Guarda los datos de la rutina
+                                    databaseReference.child("Rutina").child(idUsuario).push().setValue(rutina);
+
+                                    databaseReference.child("Rutina").child(idUsuario).orderByChild("nombreRutina").equalTo(nombreRutina).addValueEventListener(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                                                //Obtiene el ID de la rutina
+                                                idRutina = dataSnapshot.getKey();
+
+                                                Log.i("rutina", idRutina);
+                                            }
+
+                                            //Guarda los datos de cada ejercicio de la rutina
+                                            databaseReference.child("Ejercicios").child(idUsuario).child(idRutina).setValue(ejercicioList);
+
+                                        }
+
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
+
+                                        }
+                                    });
+                                }
+                            })
+                            .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    dialog.dismiss();
+                                }
+                            });
+
+                    builder.show();
+                }else {
+                    Snackbar.make(binding.containerCreateRoutine, "Debes añadir un ejercicio al menos", Snackbar.LENGTH_LONG).show();
+                }
+
+                RoutinesFragment fragment = new RoutinesFragment();
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.container, fragment).commit();
+
+            }
+        });
+    }
+
+    //Añade los ejercicios a la rutina
+    private void aniadirEjercicios() {
         binding.btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -102,124 +177,9 @@ public class CreateRoutineFragment extends Fragment {
                 builder.show();
             }
         });
-
-        //Guarda la rutina
-        binding.btnSaveRoutine.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                LayoutInflater inflater = requireActivity().getLayoutInflater();
-
-                View view = inflater.inflate(R.layout.routine_name_dialog, null);
-
-                if (!nombreEjercicio.isEmpty()){
-                    builder.setView(view)
-
-                            .setPositiveButton("Confirmar", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int id) {
-
-                                    EditText nombre = view.findViewById(R.id.etNombreRutina);
-                                    String nombreRutina = nombre.getText().toString();
-
-                                    Rutina rutina = new Rutina(idUsuario, nombreRutina);
-
-                                    //Guarda los datos de la rutina
-                                    databaseReference.child("Rutina").child(idUsuario).push().setValue(rutina);
-
-                                    databaseReference.child("Rutina").child(idUsuario).orderByChild("nombreRutina").equalTo(nombreRutina).addValueEventListener(new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                            for (DataSnapshot dataSnapshot: snapshot.getChildren()){
-                                                idRutina = dataSnapshot.getKey();
-
-                                                Log.i("rutina", idRutina);
-                                            }
-
-                                            //Guarda los datos de cada ejercicio de la rutina
-                                            databaseReference.child("Ejercicios").child(idUsuario).child(idRutina).setValue(ejercicioList);
-
-                                        }
-
-                                        @Override
-                                        public void onCancelled(@NonNull DatabaseError error) {
-
-                                        }
-                                    });
-
-
-                                }
-                            })
-                            .setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-                                public void onClick(DialogInterface dialog, int id) {
-                                    dialog.dismiss();
-                                }
-                            });
-
-                    builder.show();
-                }else {
-                    Snackbar.make(binding.containerCreateRoutine, "Debes añadir un ejercicio al menos", Snackbar.LENGTH_LONG).show();
-                }
-
-                RoutinesFragment fragment = new RoutinesFragment();
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.replace(R.id.container, fragment).commit();
-
-            }
-        });
-
-        return binding.getRoot();
     }
 
-    private String obtenerNombreEjercicio() {
-        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("nombreEjercicio", Context.MODE_PRIVATE);
-        String ejercicio = sharedPreferences.getString("ejercicio", "");
-
-
-        //Log.i("name", nombreEjercicio);
-
-        return ejercicio;
-    }
-
-    private void borrarPrefs() {
-        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("nombreEjercicio", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.clear().apply();
-    }
-
-    /*private List<Serie> rellenarLista() {
-
-
-        String nombreEjercicio = obtenerNombreEjercicio();
-        ejercicioList.add(new Serie(nombreEjercicio));
-
-
-        *//*databaseReference.child("Ejercicio").orderByChild("nombre").equalTo(nombreEjercicio).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
-                    Serie serie = new Serie(nombreEjercicio);
-                    databaseReference.child("Rutina").child(idUsuario).push().setValue(serie);
-
-                    Log.i("RESULTADOS", nombreEjercicio);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });*//*
-
-        //adapter.updateList(ejercicioList);
-
-        Log.i("list", ejercicioList.toString());
-
-        return ejercicioList;
-    }*/
-
+    //Se obtiene el ID del usuario logueado
     private String obtenerIdUsuario() {
         SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("usuario", Context.MODE_PRIVATE);
         String idUsuario = sharedPreferences.getString("IdUsuario", "");
@@ -228,23 +188,6 @@ public class CreateRoutineFragment extends Fragment {
         Log.i("iduser", idUsuario);
 
         return idUsuario;
-    }
-
-    private void guardarIdRutina(String id) {
-        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("rutina", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("IdRutina", id);
-        editor.commit();
-
-    }
-    private String obtenerIdRutina() {
-        SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("rutina", Context.MODE_PRIVATE);
-        String idRutina = sharedPreferences.getString("IdRutina", "");
-
-
-        Log.i("iduser", idRutina);
-
-        return idRutina;
     }
 
 }

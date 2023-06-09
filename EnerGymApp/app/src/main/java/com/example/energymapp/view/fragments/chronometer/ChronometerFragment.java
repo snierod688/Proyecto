@@ -31,6 +31,7 @@ public class ChronometerFragment extends Fragment {
 
     }
 
+    //Se comprueban que los campos no estén vacíos
     private void comprobarCampos() {
         binding.btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,12 +46,14 @@ public class ChronometerFragment extends Fragment {
                 }else{
                     binding.progressBar.setVisibility(View.VISIBLE);
                     binding.txtTimer.setVisibility(View.VISIBLE);
+                    //Se inicia el cronómetro
                     iniciarCronomentro();
                 }
             }
         });
     }
 
+    //Contiene la lógica del cronómetro
     private void iniciarCronomentro() {
 
         int time = Integer.parseInt(tiempo);
@@ -66,6 +69,7 @@ public class ChronometerFragment extends Fragment {
             @Override
             public void onFinish() {
                 if (repActual<reps){
+                    //Comienza el cronómtro del descanso
                     iniciarDescanso();
                 }else  {
                     binding.txtTimer.setText("Cronómetro\nFinalizado");
@@ -75,6 +79,7 @@ public class ChronometerFragment extends Fragment {
 
     }
 
+    //Contiene la lógica del cronómetro del descanso
     private void iniciarDescanso() {
 
         int rest = Integer.parseInt(descanso);

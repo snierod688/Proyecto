@@ -50,6 +50,8 @@ public class ExercisesFragment extends Fragment {
 
         binding.rvEjercicios.setLayoutManager(new LinearLayoutManager(getContext()));
         binding.rvEjercicios.setAdapter(adapter);
+
+        //Hace una consulta en la base de datos de los nombres de los ejercicios que hay guardados
         databaseReference.child("Nombre Ejercicio").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -57,6 +59,7 @@ public class ExercisesFragment extends Fragment {
                     NombreEjercicio ejercicio = dataSnapshot.getValue(NombreEjercicio.class);
                     String nombreEjercicio = ejercicio.getNombre();
 
+                    //Añade los ejercicios a la lista y la muestra en pantalla
                     nombreEjercicioList.add(new NombreEjercicio(nombreEjercicio));
                     adapter.updateList(nombreEjercicioList);
                 }

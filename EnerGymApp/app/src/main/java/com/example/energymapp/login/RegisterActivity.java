@@ -38,6 +38,7 @@ public class RegisterActivity extends AppCompatActivity {
         comprobarCampos();
     }
 
+    //Se comprueban que los campos no estén vacíos
     private void comprobarCampos() {
 
         binding.btnRegister.setOnClickListener(new View.OnClickListener() {
@@ -58,13 +59,16 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
+    //Se registra al usuario en la base de datos
     private void registro(String username, String nombre, String correo, String password) {
+        //Se crea el usuario
         mAuth.createUserWithEmailAndPassword(correo, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
 
                 if (task.isSuccessful()){
 
+                    //Se guarda el usuario en la base de datos
                     String id = databaseReference.push().getKey();
                     Usuario usuario = new Usuario(id, username, nombre, correo, password);
                     databaseReference.child("Usuario").child(id).setValue(usuario);
@@ -73,11 +77,12 @@ public class RegisterActivity extends AppCompatActivity {
                     Snackbar.make(binding.registerActivity ,"Usuario registrado correctamente", Snackbar.LENGTH_LONG).show();
 
                 }else{
-
+                    //Si el usuario ya existe
                     if (task.getException()instanceof FirebaseAuthUserCollisionException){
                         Snackbar.make(binding.registerActivity ,"El usuario ya existe", Snackbar.LENGTH_LONG).show();
 
                     }else{
+                        //Si ha ocurrido algún error en la conexión
                         Snackbar.make(binding.registerActivity ,"Error al guardar", Snackbar.LENGTH_LONG).show();
                     }
                 }

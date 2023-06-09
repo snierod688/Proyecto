@@ -28,7 +28,6 @@ public class StatsFragment extends Fragment {
 
     private FragmentStatsBinding binding;
     private DatabaseReference databaseReference;
-
     private String idUsuario;
     private String altura;
     private String peso;
@@ -42,17 +41,23 @@ public class StatsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentStatsBinding.inflate(getLayoutInflater());
+        databaseReference = FirebaseDatabase.getInstance().getReference();
 
-        binding.btnCalcularMetabolismo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MetabolismFragment fragment = new MetabolismFragment();
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.replace(R.id.container, fragment).commit();
-            }
-        });
+        showMetabolismScreen();
 
+        showExercisesList();
+
+        obtenerIdUsuario();
+        Log.i("RES", idUsuario);
+
+        guardarMedidas();
+        obtenerMedidas(idUsuario);
+
+        return binding.getRoot();
+    }
+
+    //Muestra la lista de ejercicios
+    private void showExercisesList() {
         binding.btnMostrarEjercicios.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,15 +67,19 @@ public class StatsFragment extends Fragment {
                 transaction.replace(R.id.container, fragment).commit();
             }
         });
+    }
 
-        databaseReference = FirebaseDatabase.getInstance().getReference();
-
-        obtenerIdUsuario();
-        Log.i("RES", idUsuario);
-        guardarMedidas();
-        obtenerMedidas(idUsuario);
-
-        return binding.getRoot();
+    //Dirige al usuario a la pantalla para calcular su metabolismo basal
+    private void showMetabolismScreen() {
+        binding.btnCalcularMetabolismo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MetabolismFragment fragment = new MetabolismFragment();
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.container, fragment).commit();
+            }
+        });
     }
 
     //Obtenemos el ID del usuario que se ha registrado
@@ -79,6 +88,7 @@ public class StatsFragment extends Fragment {
         idUsuario = sharedPreferences.getString("IdUsuario", String.valueOf(Context.MODE_PRIVATE));
     }
 
+    //Comprueba los campos y guarda las medidas del usuario en la base de datos
     private void guardarMedidas(){
 
         binding.btnGuardarMedidas.setOnClickListener(new View.OnClickListener() {
@@ -103,12 +113,14 @@ public class StatsFragment extends Fragment {
 
     }
 
+    //Guarda las medidas en la base de datos
     private void guardarEnBaseDatos(String altura, String peso, String biceps, String cintura, String pecho, String muslo) {
 
         MedidasUsuario medidasUsuario = new MedidasUsuario(altura, peso, biceps, cintura, pecho, muslo);
         databaseReference.child("Medidas").child(idUsuario).setValue(medidasUsuario);
     }
 
+    //Escribe las medidas en la pantalla al iniciar la pantalla
     private void obtenerMedidas(String idUsuario){
         databaseReference.child("Medidas").child(idUsuario).addValueEventListener(new ValueEventListener() {
             @Override

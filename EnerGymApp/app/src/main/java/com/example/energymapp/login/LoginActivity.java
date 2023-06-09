@@ -51,6 +51,7 @@ public class LoginActivity extends AppCompatActivity {
         goToRegistro();
     }
 
+    //Se guarda el ID del usuario que ha iniciado sesión
     private void guardarIdUsuario(String id) {
         SharedPreferences sharedPreferences = getSharedPreferences("usuario", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -59,6 +60,7 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    //Se comprueban los campos y si se ha seleccionado la opción "Recuérdame"
     private void iniciarSesion() {
 
         binding.btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -82,6 +84,7 @@ public class LoginActivity extends AppCompatActivity {
                     login(email, password);
                     emailIntroducido = binding.etEmail.getText().toString().trim();
                     if (!emailIntroducido.isEmpty()){
+                        //Si el email que se encuentra en la base de datos coincide con el introducido, se guarda el ID del usuario
                         databaseReference.orderByChild("email").equalTo(emailIntroducido).addValueEventListener(new ValueEventListener() {
                             //snapshot contiene los valores que coincidern con el email
                             @Override
@@ -106,6 +109,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    //Se llama a Firebase para permitir el inicio de sesión del usuario
     private void login(String email, String password) {
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
             @Override
@@ -128,6 +132,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    //Se muestra la pantalla para registrase
     private void goToRegistro(){
         binding.btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override

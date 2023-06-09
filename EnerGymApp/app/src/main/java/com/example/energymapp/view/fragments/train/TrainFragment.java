@@ -38,13 +38,10 @@ public class TrainFragment extends Fragment {
     private DatabaseReference databaseReference;
     private String idUsuario;
     private String idRutina;
-
     private List<Ejercicio> muestraEjerciciosList;
     private List<Ejercicio> ejercicioListBD;
-
     private String  reps1, reps2, reps3, reps4;
     private String peso1, peso2, peso3, peso4;
-
     private int repsTotal, pesoTotal;
     private String nombreEjercicio;
 
@@ -66,67 +63,20 @@ public class TrainFragment extends Fragment {
         repsTotal = 0;
         pesoTotal = 0;
 
+        //Se pinta el nombre de la rutina seleccionada en la pantalla anterior
         binding.txtNombreRutina.setText(obtenerNombreRutina());
 
-        binding.btnComenzar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                binding.rvRutinaTrain.setVisibility(View.VISIBLE);
-                binding.btnGuardarDatos.setEnabled(true);
-            }
-        });
+        startTrain();
 
-        //Consulta en la Base de datos para obtener el ID de la rutina
-        databaseReference.child("Rutina").child(idUsuario).orderByChild("nombreRutina").equalTo(obtenerNombreRutina()).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
-                    idRutina = dataSnapshot.getKey();
-                    guardarIdRutina(idRutina);
+        showExercisesInRoutine();
 
+        saveTrain();
 
-                    Log.i("idRutina", idRutina);
-                }
+        return binding.getRoot();
+    }
 
-                //Muestra el nombre de los ejercicios
-                databaseReference.child("Ejercicios").child(idUsuario).child(idRutina).addValueEventListener(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for (DataSnapshot dataSnapshot: snapshot.getChildren()){
-                            Ejercicio ejercicio = dataSnapshot.getValue(Ejercicio.class);
-                            nombreEjercicio = ejercicio.getNombreEjercicio();
-
-                            String peso1 = ejercicio.getPeso1();
-                            String peso2 = ejercicio.getPeso2();
-                            String peso3 = ejercicio.getPeso3();
-                            String peso4 = ejercicio.getPeso4();
-
-                            String reps1 = ejercicio.getReps1();
-                            String reps2 = ejercicio.getReps2();
-                            String reps3 = ejercicio.getReps3();
-                            String reps4 = ejercicio.getReps4();
-
-                            Log.i("ejercicio", nombreEjercicio);
-
-                            muestraEjerciciosList.add(new Ejercicio(nombreEjercicio, repsTotal, pesoTotal, peso1, peso2, peso3, peso4, reps1, reps2, reps3, reps4));
-                            adapter.updateList(muestraEjerciciosList);
-                            binding.btnGuardarDatos.setEnabled(true);
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
+    //Guarda los registros del entrenamiento
+    private void saveTrain() {
         binding.btnGuardarDatos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -205,16 +155,11 @@ public class TrainFragment extends Fragment {
 
                                 }
 
+                                //Guarda los registros y actualiza la lista
                                 databaseReference.child("Ejercicios").child(idUsuario).child(idRutina).setValue(ejercicioListBD);
                                 adapter.updateList(ejercicioListBD);
 
-                                //Muestra el fragment con las estadísticas del entrenamiento realizado
-                                TrainStatsFragment fragment = new TrainStatsFragment();
-                                FragmentManager fragmentManager = getFragmentManager();
-                                FragmentTransaction transaction = fragmentManager.beginTransaction();
-                                transaction.replace(R.id.container, fragment).commit();
-
-                                Snackbar.make(binding.containerTrain, "Rutina actualizada correctamente", Snackbar.LENGTH_LONG).show();
+                                showTrainStats();
 
                             }
                         })
@@ -226,10 +171,85 @@ public class TrainFragment extends Fragment {
                 builder.show();
             }
         });
-
-        return binding.getRoot();
     }
 
+    //Muestra el fragment con las estadísticas del entrenamiento realizado
+    private void showTrainStats() {
+        TrainStatsFragment fragment = new TrainStatsFragment();
+        FragmentManager fragmentManager = getFragmentManager();
+        FragmentTransaction transaction = fragmentManager.beginTransaction();
+        transaction.replace(R.id.container, fragment).commit();
+
+        Snackbar.make(binding.containerTrain, "Rutina actualizada correctamente", Snackbar.LENGTH_LONG).show();
+    }
+
+    //Muestra el nombre de los ejercicios que contiene la rutina
+    private void showExercisesInRoutine() {
+        //Consulta en la Base de datos para obtener el ID de la rutina
+        databaseReference.child("Rutina").child(idUsuario).orderByChild("nombreRutina").equalTo(obtenerNombreRutina()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                    idRutina = dataSnapshot.getKey();
+                    guardarIdRutina(idRutina);
+
+
+                    Log.i("idRutina", idRutina);
+                }
+
+                //Muestra el nombre de los ejercicios
+                databaseReference.child("Ejercicios").child(idUsuario).child(idRutina).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot dataSnapshot: snapshot.getChildren()){
+                            Ejercicio ejercicio = dataSnapshot.getValue(Ejercicio.class);
+                            nombreEjercicio = ejercicio.getNombreEjercicio();
+
+                            String peso1 = ejercicio.getPeso1();
+                            String peso2 = ejercicio.getPeso2();
+                            String peso3 = ejercicio.getPeso3();
+                            String peso4 = ejercicio.getPeso4();
+
+                            String reps1 = ejercicio.getReps1();
+                            String reps2 = ejercicio.getReps2();
+                            String reps3 = ejercicio.getReps3();
+                            String reps4 = ejercicio.getReps4();
+
+                            Log.i("ejercicio", nombreEjercicio);
+
+                            //Añade los ejercicios a la lista
+                            muestraEjerciciosList.add(new Ejercicio(nombreEjercicio, repsTotal, pesoTotal, peso1, peso2, peso3, peso4, reps1, reps2, reps3, reps4));
+                            adapter.updateList(muestraEjerciciosList);
+                            binding.btnGuardarDatos.setEnabled(true);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    //Inicia el entrenamiento y permite guardar los registros del mismo
+    private void startTrain() {
+        binding.btnComenzar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                binding.rvRutinaTrain.setVisibility(View.VISIBLE);
+                binding.btnGuardarDatos.setEnabled(true);
+            }
+        });
+    }
+
+    //Obtiene el ID del usuario logueado
     private String obtenerIdUsuario() {
         SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("usuario", Context.MODE_PRIVATE);
         String idUsuario = sharedPreferences.getString("IdUsuario", "");
@@ -240,6 +260,7 @@ public class TrainFragment extends Fragment {
         return idUsuario;
     }
 
+    //Obtiene el nombre de la rutina seleccionada previamente
     private String obtenerNombreRutina() {
         SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("rutina", Context.MODE_PRIVATE);
         String nombreRutina = sharedPreferences.getString("nombreRutina", "");
@@ -250,6 +271,7 @@ public class TrainFragment extends Fragment {
         return nombreRutina;
     }
 
+    //Guarda el ID de la rutina
     private void guardarIdRutina(String id) {
         SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("rutinaID", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();

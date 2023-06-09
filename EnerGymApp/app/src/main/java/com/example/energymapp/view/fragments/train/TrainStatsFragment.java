@@ -46,8 +46,6 @@ public class TrainStatsFragment extends Fragment {
     private List<BarEntry> ejercicioList;
     private List<String> nombreEjercicios;
     private float i;
-    /*private int repsTotal, pesoTotal;
-    private String nombreEjercicio;*/
 
 
     @Override
@@ -61,8 +59,31 @@ public class TrainStatsFragment extends Fragment {
         nombreEjercicios = new ArrayList<>();
         idUsuario = obtenerIdUsuario();
         idRutina = obtenerIdRutina();
-       // i=0;
 
+        getTrainData();
+
+        backToRoutineTrain();
+
+
+        return binding.getRoot();
+    }
+
+    //Regresa al usuario a la pantalla de las rutinas
+    private void backToRoutineTrain() {
+        binding.btnBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Vuelve al fragment donde se encuentran las rutinas para iniciar los entrenamientos
+                RoutineTrainFragment fragment = new RoutineTrainFragment();
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.container, fragment).commit();
+            }
+        });
+    }
+
+    //Obtiene los registros del entrenamiento realizado
+    private void getTrainData() {
         databaseReference.child("Ejercicios").child(idUsuario).child(idRutina).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -88,20 +109,7 @@ public class TrainStatsFragment extends Fragment {
                     Log.i("lista", ejercicioList.toString());
                 }
 
-                BarDataSet barDataSet = new BarDataSet(ejercicioList, "Rutina");
-                barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
-                barDataSet.setValueTextColor(Color.BLACK);
-                barDataSet.setValueTextSize(16f);
-
-                BarData barData = new BarData(barDataSet);
-                binding.barChart.setData(barData);
-                binding.barChart.animateY(2000);
-                binding.barChart.getDescription().setEnabled(false);
-
-                XAxis axis = binding.barChart.getXAxis();
-                axis.setValueFormatter(new IndexAxisValueFormatter(nombreEjercicios));
-                axis.setPosition(XAxis.XAxisPosition.BOTTOM);
-                axis.setCenterAxisLabels(true);
+                printChart();
             }
 
             @Override
@@ -109,24 +117,27 @@ public class TrainStatsFragment extends Fragment {
 
             }
         });
-
-        Log.i("lista", "N elementos: " + ejercicioList.size());
-
-        binding.btnBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //Vuelve al fragment donde se encuentran las rutinas para iniciar los entrenamientos
-                RoutineTrainFragment fragment = new RoutineTrainFragment();
-                FragmentManager fragmentManager = getFragmentManager();
-                FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.replace(R.id.container, fragment).commit();
-            }
-        });
-
-
-        return binding.getRoot();
     }
 
+    //Se muestra el gráfico de barras
+    private void printChart() {
+        BarDataSet barDataSet = new BarDataSet(ejercicioList, "Rutina");
+        barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+        barDataSet.setValueTextColor(Color.BLACK);
+        barDataSet.setValueTextSize(16f);
+
+        BarData barData = new BarData(barDataSet);
+        binding.barChart.setData(barData);
+        binding.barChart.animateY(2000);
+        binding.barChart.getDescription().setEnabled(false);
+
+        XAxis axis = binding.barChart.getXAxis();
+        axis.setValueFormatter(new IndexAxisValueFormatter(nombreEjercicios));
+        axis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        axis.setCenterAxisLabels(true);
+    }
+
+    //Obtiene el ID de la rutina realizada
     private String obtenerIdRutina(){
         SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("rutinaID", Context.MODE_PRIVATE);
         String id = sharedPreferences.getString("idRutina", "");
@@ -137,6 +148,7 @@ public class TrainStatsFragment extends Fragment {
         return id;
     }
 
+    //Obtiene el ID del usuario logueado
     private String obtenerIdUsuario() {
         SharedPreferences sharedPreferences = this.getActivity().getSharedPreferences("usuario", Context.MODE_PRIVATE);
         String idUsuario = sharedPreferences.getString("IdUsuario", "");
@@ -146,17 +158,4 @@ public class TrainStatsFragment extends Fragment {
 
         return idUsuario;
     }
-
-    /*public class MyAxisValueFormatter extends ValueFormatter implements IAxisValueFormatter{
-
-        private List<String> values;
-        public MyAxisValueFormatter(List<String> values){
-            this.values = values;
-        }
-
-        @Override
-        public String getFormattedValue(float value, AxisBase axis) {
-            return null;
-        }
-    }*/
 }
