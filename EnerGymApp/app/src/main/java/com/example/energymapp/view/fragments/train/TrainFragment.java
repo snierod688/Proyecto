@@ -72,6 +72,7 @@ public class TrainFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 binding.rvRutinaTrain.setVisibility(View.VISIBLE);
+                binding.btnGuardarDatos.setEnabled(true);
             }
         });
 

@@ -75,8 +75,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/txtNombreRutina" />
 
-            <!--inicialmente el recycler esta en gone hasta que se añada el primer ejercicio -->
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rvRutinaTrain"
                 android:layout_width="match_parent"
@@ -87,6 +85,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/btnComenzar"
                 tools:listitem="@layout/item_routine"
+                tools:itemCount="1"
                 android:visibility="gone"
                 />
 
@@ -98,6 +97,7 @@
                 android:layout_margin="20dp"
                 android:text="GUARDAR DATOS"
                 android:textSize="25sp"
+                android:enabled="false"
                 android:fontFamily="@font/mina_regular"
                 android:textStyle="bold"
                 android:background="@drawable/custom_button_create_routine"

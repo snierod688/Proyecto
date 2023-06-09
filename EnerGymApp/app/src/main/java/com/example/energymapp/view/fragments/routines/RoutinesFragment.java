@@ -97,6 +97,9 @@ public class RoutinesFragment extends Fragment {
 
                                         }
                                     });
+                                }else{
+                                    Snackbar.make(binding.containerAllRoutines, "Debes introducir un nuevo nombre para la rutina", Snackbar.LENGTH_LONG).show();
+
                                 }
 
                             }
